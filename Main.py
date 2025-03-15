@@ -99,7 +99,7 @@ class LogInWindow(QMainWindow):
         else:
             # Validar las credenciales
             #is_valid, user_data = self.login_system.validate_user(username, password)
-            is_valid  = self.db_manager.validate_user(username, password)
+            is_valid,user_data = self.db_manager.validate_user(username, password)
 
             if is_valid:
                 QMessageBox.information(self, "Inicio de sesión exitoso", "¡Bienvenido!")
