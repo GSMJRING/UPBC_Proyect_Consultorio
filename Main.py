@@ -60,12 +60,14 @@ class LogInWindow(QMainWindow):
         self.txt_User = QLineEdit(self)
         self.txt_User.setGeometry(64, 200, 193, 33)
         self.txt_User.setFont(QFont('Segoe UI', 9))
+        self.txt_User.maxLength = 20  # Limitar la longitud del texto a 20 caracteres
 
         # TXT Password esta configurado para contraseña
         self.txt_Pass = QLineEdit(self)
         self.txt_Pass.setGeometry(64, 288, 193, 33)
         self.txt_Pass.setFont(QFont('Segoe UI', 9))
         self.txt_Pass.setEchoMode(QLineEdit.EchoMode.Password)
+        self.txt_Pass.maxLength = 20  # Limitar la longitud del texto a 20 caracteres
 
         # Boton Cancel
         self.bCancel = QPushButton(self)
