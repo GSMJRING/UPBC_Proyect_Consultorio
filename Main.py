@@ -99,6 +99,7 @@ class LogInWindow(QMainWindow):
         else:
             # Validar las credenciales
             #is_valid, user_data = self.login_system.validate_user(username, password)
+            # Aqui estaba el error Andres → 03/15/2025 12:34
             is_valid,user_data = self.db_manager.validate_user(username, password)
 
             if is_valid:
