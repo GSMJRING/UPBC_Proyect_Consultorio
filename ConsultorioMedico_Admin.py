@@ -29,19 +29,19 @@ class WindowAdmin(QMainWindow):
         self.create_widgets()
 
     def create_widgets(self):
-        # Boton agregar usuario
-        self.bAgregarUsuario = QPushButton(self)
-        self.bAgregarUsuario.setGeometry(32, 512, 169, 65)
-        self.bAgregarUsuario.setFont(QFont('Segoe UI', 9))
-        self.bAgregarUsuario.setText('Agregar Usuario')
-        self.bAgregarUsuario.clicked.connect(self.bAgregarUsuario_clicked)
-        
         # Logo de la aplicacion || Cambia la ruta de la imagen dependiendo de la ubicacion
         pixmap= QPixmap(self.RutaImagen)
         self.LogoIMG = QLabel(self)
         self.LogoIMG.setPixmap(pixmap)
         self.LogoIMG.setGeometry(448, 48, 129, 129)
         self.LogoIMG.setScaledContents(True)
+
+        # Boton agregar usuario
+        self.bAgregarUsuario = QPushButton(self)
+        self.bAgregarUsuario.setGeometry(32, 512, 169, 65)
+        self.bAgregarUsuario.setFont(QFont('Segoe UI', 9))
+        self.bAgregarUsuario.setText('Agregar Usuario')
+        self.bAgregarUsuario.clicked.connect(self.bAgregarUsuario_clicked)
 
         # Boton Cancelar
         self.bCerrarventana = QPushButton(self)
