@@ -20,7 +20,14 @@ class Window(QMainWindow):
         self.lEspecialidad.setGeometry(16, 32, 80, 24)
         self.lEspecialidad.setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
         self.lEspecialidad.setText('Especialidad:')
+        
+        # Tabla de citas activas del paciente || 03/15/2025 12:34
+        self.TablaCitas = QTableView(self)
+        self.TablaCitas.setGeometry(440, 48, 457, 265)
+        self.TablaCitas.setFont(QFont('Segoe UI', 9))
+        self.TablaCitas.setModel(QStandardItemModel())
         pass
+
 
 if __name__ == "__main__":
     app = QApplication([])
