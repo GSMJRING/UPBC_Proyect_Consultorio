@@ -1,3 +1,5 @@
+# Aplicacion ejecutada desde GitHub
+# Consultorio Medico
 # Nota: Es importante instalar las liberiarias de PyQt6 y mysql-connector-python
 # pip install PyQt6 mysql-connector-python
 #
