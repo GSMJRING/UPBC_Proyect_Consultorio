@@ -15,18 +15,19 @@ class WindowAdmin(QMainWindow):
         #     password="Capgemini2008",
         #     database="consultoriomedico"
         # )
-        
+
         # Nuevo modo de conexion a base de datos
         self.db_manager = DatabaseManager()
         self.db_manager.connect()
 
         self.setWindowIcon(QIcon('C:\Consultorio\Admin_Logo.ico'))  # Icono de la ventana de la aplicacion
         self.RutaImagen = "C:\Consultorio\DM_Admin.png" # Ruta de la imagen
-        
+
         self.resize(952, 632)
         self.setWindowTitle('Consultorio Medico || Administrador')
         self.setCentralWidget(QWidget(self))
         self.create_widgets()
+
 
     def create_widgets(self):
         # Logo de la aplicacion || Cambia la ruta de la imagen dependiendo de la ubicacion
@@ -123,6 +124,13 @@ class WindowAdmin(QMainWindow):
         self.cmb_UserType.setModel(QStringListModel(['Paciente', 'Doctor', 'Administrador']))
         self.cmb_UserType.currentTextChanged.connect(self.update_label)
 
+        # ComboBox de especialidades
+        self.cmbEspecialidad = QComboBox(self)
+        self.cmbEspecialidad.setGeometry(184, 392, 264, 32)
+        self.cmbEspecialidad.setFont(QFont('Segoe UI', 9))
+        self.cmbEspecialidad.setModel(QStringListModel(['Medico General', 'Ginecologia', 'Pediatra', 'Odontologia', 'Psiquiatra', 'Psicologia', 'Urologo', 'Nefrologo']))
+        self.cmbEspecialidad.hide() # Ocultar de forma inicial
+
         # LBL de funcion automatica en cuestion del CMB
         self.label1 = QLabel(self)
         self.label1.setGeometry(48, 400, 120, 24)
@@ -145,10 +153,6 @@ class WindowAdmin(QMainWindow):
         self.txt_Email = QLineEdit(self)
         self.txt_Email.setGeometry(184, 352, 273, 25)
         self.txt_Email.setFont(QFont('Segoe UI', 9))
-
-        self.txt_Especialidad = QLineEdit(self)
-        self.txt_Especialidad.setGeometry(184, 392, 273, 25)
-        self.txt_Especialidad.setFont(QFont('Segoe UI', 9))
 
         self.dte_Nacimiento = QDateEdit(self)
         self.dte_Nacimiento.setGeometry(184, 392, 273, 33)
@@ -176,16 +180,19 @@ class WindowAdmin(QMainWindow):
             self.label1.setText("Fecha de Nacimiento:")
             self.label1.show()
             self.dte_Nacimiento.show()
-            self.txt_Especialidad.hide()
+            #self.txt_Especialidad.hide()
+            self.cmbEspecialidad.hide()
         elif text == "Doctor":
             self.label1.setText("Especialidad:")
             self.label1.show()
             self.dte_Nacimiento.hide()
-            self.txt_Especialidad.show()
+            #self.txt_Especialidad.show()
+            self.cmbEspecialidad.show()
         else:  # Administrador
             self.label1.hide()
             self.dte_Nacimiento.hide()
-            self.txt_Especialidad.hide()
+           # self.txt_Especialidad.hide()
+            self.cmbEspecialidad.hide()
 
     def bAgregarUsuario_clicked(self): # Funcion para agregar un usuario
         nombre_usuario = self.txt_User.text()
@@ -196,7 +203,8 @@ class WindowAdmin(QMainWindow):
         telefono = self.txt_Telefono.text()
         email = self.txt_Email.text()
         fecha_nacimiento = self.dte_Nacimiento.date().toString("yyyy-MM-dd") if rol == "paciente" else None
-        especialidad = self.txt_Especialidad.text() if rol == "doctor" else None
+        #especialidad = self.txt_Especialidad.text() if rol == "doctor" else None
+        especialidad = self.cmbEspecialidad.currentText() if rol == "doctor" else None # Se cambia a combobox || 03/15/2025 4:34 PM || MS
 
         success, message = self.db_manager.agregar_usuario(
             nombre_usuario, contrasena, rol, nombre, apellido, telefono, email, fecha_nacimiento, especialidad
@@ -228,10 +236,10 @@ class WindowAdmin(QMainWindow):
         if not selected_index.isValid():
             QMessageBox.warning(self, "Advertencia", "Seleccione un usuario para eliminar.")
             return
-        
+
         if QMessageBox.question(self, "Eliminar usuario", "¿Está seguro de que desea eliminar este usuario?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) == QMessageBox.StandardButton.No:
             return
-        
+
         usuario_id = selected_index.data().split()[0]
         success, message = self.db_manager.eliminar_usuario(usuario_id)
         if success:
@@ -271,7 +279,8 @@ class WindowAdmin(QMainWindow):
         email = self.txt_Email.text()
         #self.dte_Nacimiento.setDate(detalles[7])  # fecha_nacimiento
         fecha_nacimiento = self.dte_Nacimiento.date().toString("yyyy-MM-dd") if rol == "paciente" else None
-        especialidad = self.txt_Especialidad.text() if rol == "doctor" else None
+        #especialidad = self.txt_Especialidad.text() if rol == "doctor" else None
+        especialidad = self.cmbEspecialidad.currentText() if rol == "doctor" else None
 
         success, message = self.db_manager.actualizar_usuario(
             usuario_id, nombre_usuario, contrasena, rol, nombre, apellido, telefono, email, fecha_nacimiento, especialidad
@@ -298,7 +307,7 @@ class WindowAdmin(QMainWindow):
         #     parts = text.split(" - ")  # Divide usando " - " como separador
         #     self.label.setText(f"Seleccionado: {parts[0]}, {parts[1]}")  # Muestra los datos separados
 
-        success, detalles = self.db_manager.obtener_detalles_usuario(usuario_id) 
+        success, detalles = self.db_manager.obtener_detalles_usuario(usuario_id)
         if not success:
             QMessageBox.critical(self, "Error", detalles)
             return
@@ -324,6 +333,7 @@ class WindowAdmin(QMainWindow):
 
     def LimpiarCampos(self): # Funcion para limpiar los campos
         self.cmb_UserType.setCurrentIndex(0)
+        self.cmbEspecialidad.setCurrentIndex(0)
         self.ListUSers.clearSelection()
         self.txt_User.clear()
         self.txt_Password.clear()
@@ -331,7 +341,7 @@ class WindowAdmin(QMainWindow):
         self.txt_Apellido.clear()
         self.txt_Telefono.clear()
         self.txt_Email.clear()
-        self.txt_Especialidad.clear()
+        #self.txt_Especialidad.clear()
         self.dte_Nacimiento.setDate(QDate.currentDate())
         self.cmb_UserType.setFocus()
 
