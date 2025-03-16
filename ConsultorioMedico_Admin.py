@@ -89,7 +89,7 @@ class WindowAdmin(QMainWindow):
 
         # GroupBox - Informacion de usuario
         self.groupBox1 = QGroupBox(self)
-        self.groupBox1.setGeometry(40, 32, 400, 152)
+        self.groupBox1.setGeometry(32, 32, 424, 176)
         self.groupBox1.setFont(QFont('Segoe UI', 9))
         self.groupBox1.setTitle('Informacion de Usuario')
 
@@ -174,6 +174,14 @@ class WindowAdmin(QMainWindow):
         self.bActualizarUsuario.setFont(QFont('Segoe UI', 9))
         self.bActualizarUsuario.setText('Actualizar Usuario')
         self.bActualizarUsuario.clicked.connect(self.bActualizarUsuario_clicked)
+        # Nota de usuario || Password
+        self.lblNotificacionPWS = QLabel(self.groupBox1)
+        self.lblNotificacionPWS.setGeometry(32, 144, 376, 24)
+        self.lblNotificacionPWS.setFont(QFont('Segoe UI', 7))
+        # Cambiar color de texto a azul
+        self.lblNotificacionPWS.setStyleSheet("color: lightblue;")
+        self.lblNotificacionPWS.setText('* Si se requiere actualizar el usuario: El cambio de password es necesario. ')
+
         #pass
 
     def update_label(self, text):
@@ -273,7 +281,7 @@ class WindowAdmin(QMainWindow):
 
         nombre_usuario = self.txt_User.text()
         # Actualizar contraseña solo si se ha ingresado una nueva
-        contrasena = self.txt_Password.text() if self.txt_Password.text() else None        
+        contrasena = self.txt_Password.text() if self.txt_Password.text() else None
         rol = self.cmb_UserType.currentText().lower()
         nombre = self.txt_Nombre.text()
         apellido = self.txt_Apellido.text()
@@ -316,7 +324,7 @@ class WindowAdmin(QMainWindow):
 
         # Mostrar la contraseña hasheada (índice 2)
         #self.txt_Password.setText(sha256(detalles[2].encode()).hexdigest())
-        self.txt_Password.setPlaceholderText("Contraseña encriptada")
+        self.txt_Password.setPlaceholderText("PASSWORD HASHEADA")
 
         # Mostrar detalles según el rol del usuario
         if detalles[3] == "paciente":  # Verificar el rol (índice 3)
