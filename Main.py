@@ -92,6 +92,7 @@ class LogInWindow(QMainWindow):
     # Funciones al presionar los botones
     def bLogIn_clicked(self, checked):
         # Solicitar credenciales al usuario
+        # Cambio de datos || 03/15/2025 5:02 || MS
         username = self.txt_User.text()
         password = self.txt_Pass.text()
 
@@ -100,7 +101,6 @@ class LogInWindow(QMainWindow):
             return
         else:
             # Validar las credenciales
-            #is_valid, user_data = self.login_system.validate_user(username, password)
             # Aqui estaba el error Andres → 03/15/2025 12:34
             is_valid,user_data = self.db_manager.validate_user(username, password)
 
@@ -114,7 +114,6 @@ class LogInWindow(QMainWindow):
                 return
 
             # Cerrar la conexión a la base de datos antes de iniciar la ventana siguiente
-            # self.login_system.close_connection()
             self.db_manager.disconnect()
 
     def bCancel_clicked(self, checked):
