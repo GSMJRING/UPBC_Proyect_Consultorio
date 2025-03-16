@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import QPixmap
+from hashlib import sha256 # Encruptador de contraseña basado en SHA256
 from DatabaseManager import DatabaseManager
 
 class WindowAdmin(QMainWindow):
@@ -271,7 +272,8 @@ class WindowAdmin(QMainWindow):
         usuario_id = selected_index.data().split()[0]
 
         nombre_usuario = self.txt_User.text()
-        contrasena = self.txt_Password.text()
+        # Actualizar contraseña solo si se ha ingresado una nueva
+        contrasena = self.txt_Password.text() if self.txt_Password.text() else None        
         rol = self.cmb_UserType.currentText().lower()
         nombre = self.txt_Nombre.text()
         apellido = self.txt_Apellido.text()
@@ -295,41 +297,47 @@ class WindowAdmin(QMainWindow):
 
     def cargar_detalles_usuario(self):
         """Carga los detalles del usuario seleccionado en los controles."""
-        selected_index = self.ListUSers.currentIndex() # Obtener el índice seleccionado
+        selected_index = self.ListUSers.currentIndex()  # Obtener el índice seleccionado
         if not selected_index.isValid():
             return
 
-        #usuario_id = self.ListUSers.model().data(selected_index, Qt.DisplayRole).split()[0]
+        # Obtener el ID del usuario seleccionado
         usuario_id = selected_index.data().split()[0]
 
-        # if selected_index.isValid():
-        #     text = selected_index.data()  # Obtiene el texto del item seleccionado
-        #     parts = text.split(" - ")  # Divide usando " - " como separador
-        #     self.label.setText(f"Seleccionado: {parts[0]}, {parts[1]}")  # Muestra los datos separados
-
+        # Obtener los detalles del usuario desde la base de datos
         success, detalles = self.db_manager.obtener_detalles_usuario(usuario_id)
         if not success:
             QMessageBox.critical(self, "Error", detalles)
             return
 
-        # Mostrar los detalles en los controles
-        self.txt_User.setText(detalles[1])  # nombre_usuario
-        self.cmb_UserType.setCurrentText(detalles[2].capitalize())  # rol
-        self.txt_Password.clear()  # No mostrar la contraseña por seguridad
+        # Mostrar los detalles del usuario en los controles
+        self.txt_User.setText(detalles[1])  # nombre_usuario (índice 1)
+        self.cmb_UserType.setCurrentText(detalles[3].capitalize())  # rol (índice 3)
 
-        if detalles[2] == "paciente":
-            self.txt_Nombre.setText(detalles[5])  # nombre_paciente
-            self.txt_Apellido.setText(detalles[6])  # apellido_paciente
-            #self.dte_Nacimiento.setDate(QDate.fromString(detalles[7], "yyyy-MM-dd"))  # fecha_nacimiento
-            self.dte_Nacimiento.setDate(detalles[7])  # fecha_nacimiento
-            self.txt_Telefono.setText(detalles[8])  # telefono_paciente
-            self.txt_Email.setText(detalles[9])  # email_paciente
-        elif detalles[2] == "doctor":
-            self.txt_Nombre.setText(detalles[10])  # nombre_medico
-            self.txt_Apellido.setText(detalles[11])  # apellido_medico
-            self.txt_Especialidad.setText(detalles[12])  # especialidad
-            self.txt_Telefono.setText(detalles[13])  # telefono_medico
-            self.txt_Email.setText(detalles[14])  # email_medico
+        # Mostrar la contraseña hasheada (índice 2)
+        #self.txt_Password.setText(sha256(detalles[2].encode()).hexdigest())
+        self.txt_Password.setPlaceholderText("Contraseña encriptada")
+
+        # Mostrar detalles según el rol del usuario
+        if detalles[3] == "paciente":  # Verificar el rol (índice 3)
+            self.txt_Nombre.setText(detalles[6])  # nombre_paciente (índice 6)
+            self.txt_Apellido.setText(detalles[7])  # apellido_paciente (índice 7)
+            self.dte_Nacimiento.setDate(detalles[8])  # fecha_nacimiento (índice 8)
+            self.txt_Telefono.setText(detalles[9])  # telefono_paciente (índice 9)
+            self.txt_Email.setText(detalles[10])  # email_paciente (índice 10)
+        elif detalles[3] == "doctor":  # Verificar el rol (índice 3)
+            self.txt_Nombre.setText(detalles[11])  # nombre_medico (índice 11)
+            self.txt_Apellido.setText(detalles[12])  # apellido_medico (índice 12)
+            self.cmbEspecialidad.setCurrentText(detalles[13])  # especialidad (índice 13)
+            self.txt_Telefono.setText(detalles[14])  # telefono_medico (índice 14)
+            self.txt_Email.setText(detalles[15])  # email_medico (índice 15)
+        elif detalles[3] == "administrador":  # Verificar el rol (índice 3)
+            # Si el rol es administrador, limpiar los campos
+            self.txt_Nombre.setText("")
+            self.txt_Apellido.setText("")
+            self.txt_Telefono.setText("")
+            self.txt_Email.setText("")
+            self.dte_Nacimiento.setDate(QDate.currentDate())
 
     def LimpiarCampos(self): # Funcion para limpiar los campos
         self.cmb_UserType.setCurrentIndex(0)
