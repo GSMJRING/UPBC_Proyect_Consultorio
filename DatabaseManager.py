@@ -11,6 +11,7 @@ class DatabaseManager:
         self.user="root"
         self.password="Castro10!Aboytes" # Dan
         #self.password="Capgemini2008" # Marco
+        #self.password="Aurora120601@" # Robbie
         self.database="consultoriomedico"
         self.connection = None
          

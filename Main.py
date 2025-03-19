@@ -21,13 +21,6 @@ class LogInWindow(QMainWindow):
     # Apartado de dimensiones de ventana y titulo
     def __init__(self):
         super().__init__()
-        # # Configuración de la conexión a la base de datos
-        # self.host = "localhost"  # Cambia esto si tu base de datos está en otro servidor
-        # self.user = "root"  # Cambia esto por tu usuario de MySQL
-        # self.password = "Capgemini2008"  # Cambia esto por tu contraseña de MySQL
-        # self.database = "Consultoriomedico"  # Version actual
-        # self.login_system = LoginSystem(self.host, self.user, self.password, self.database)
-
         # Nuevo modo de conexion a base de datos
         self.db_manager = DatabaseManager()
         self.db_manager.connect()
