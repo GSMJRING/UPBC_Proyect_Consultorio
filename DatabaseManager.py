@@ -14,9 +14,9 @@ class DatabaseManager:
     
     def __init__(self):
         # Configuración de la conexión a la base de datos
-        self.host="localhost:3306"
+        self.host="localhost"
         self.user="root"
-        self.password="Aurora120601@" # Robbie
+        self.password="Castro10!Aboytes" # Dan
         #self.password="Capgemini2008" # Marco
         self.database="consultoriomedico"
         self.connection = None
