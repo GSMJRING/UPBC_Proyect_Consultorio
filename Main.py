@@ -9,6 +9,8 @@ from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import QPixmap # Importar la clase QPixmap para la imagen de inicio de sesion
 from ConsultorioMedico_Admin import WindowAdmin  # Importar la clase WindowAdmin
+from Interfaz_Paciente import WindowPaciente  # Importar la clase WindowPaciente
+
 # Conexion a base de datos
 #from ConsultorioMedico_LogIn_Function import *  # Importar la clase LoginSystem base de datos || Database ConsultorioMedico
 from DatabaseManager import DatabaseManager  # Importar la clase DatabaseManager
@@ -105,8 +107,12 @@ class LogInWindow(QMainWindow):
             is_valid,user_data = self.db_manager.validate_user(username, password)
 
             if is_valid:
-                QMessageBox.information(self, "Inicio de sesión exitoso", "¡Bienvenido!")
-                self.open_admin_window()  # Abrir la ventana de administrador
+                if  user_data[3] == "administrador":
+                    QMessageBox.information(self, "Inicio de sesión exitoso", "¡Bienvenido!")
+                    self.open_admin_window()
+                else:
+                    QMessageBox.information(self, "Inicio de sesión exitoso", "¡Bienvenido!")
+                    self.open_paciente_window()
             else:
                 QMessageBox.warning(self, "Error", "Nombre de usuario o contraseña incorrectos.")
                 self.txt_Pass.clear()  # Limpiar el campo de contraseña
@@ -128,6 +134,12 @@ class LogInWindow(QMainWindow):
         #self.admin_window = WindowAdmin(db_manager=self.login_system)
         self.admin_window = WindowAdmin()
         self.admin_window.show()
+        self.close()
+
+    def open_paciente_window(self):
+        """Abre la ventana de paciente."""
+        self.paciente_window = WindowPaciente()
+        self.paciente_window.show()
         self.close()
 
 
