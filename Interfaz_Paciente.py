@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 
-class Window(QMainWindow):
+class WindowPaciente(QMainWindow):
 
     def __init__(self):
         super().__init__()
@@ -43,7 +43,7 @@ class Window(QMainWindow):
         self.bCerrarSesion.setStyleSheet('background-color: rgb(255, 0, 0);')
         # Boton confirmar cita
         self.bConfirmarCita = QPushButton(self.groupBox1)
-        self.bConfirmarCita.setGeometry(24, 216, 344, 56)
+        self.bConfirmarCita.setGeometry(32, 216, 344, 56)
         self.bConfirmarCita.setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
         self.bConfirmarCita.setStyleSheet('color: rgb(0, 0, 0);')
         # Cambiar color de letra a negro
@@ -56,10 +56,10 @@ class Window(QMainWindow):
         self.cmbEspecialidad.setFont(QFont('Segoe UI', 9))
         self.cmbEspecialidad.setModel(QStringListModel(['Medico General', 'Ginecologia', 'Pediatra', 'Odontologia', 'Psiquiatra', 'Psicologia', 'Urologo', 'Nefrologo']))
         # Selector de fecha de cita
-        # self.dateEdit1 = QDateEdit(self.groupBox1)
-        # self.dateEdit1.setGeometry(176, 104, 208, 32)
-        # self.dateEdit1.setFont(QFont('Segoe UI', 9))
-        # self.dateEdit1.setDisplayFormat('m/d/yyyy')
+        # self.FechaCita = QDateEdit(self.groupBox1)
+        # self.FechaCita.setGeometry(176, 104, 208, 32)
+        # self.FechaCita.setFont(QFont('Segoe UI', 9))
+        # self.FechaCita.setDisplayFormat('m/d/yyyy')
 
         self.dte_Nacimiento = QDateEdit(self)
         self.dte_Nacimiento.setGeometry(176, 135, 208, 32)
@@ -70,16 +70,16 @@ class Window(QMainWindow):
         self.dte_Nacimiento.setMaximumDate(QDate(2032, 1, 1))
 
         # Selector de hora de cita
-        # self.timeEdit1 = QTimeEdit(self.groupBox1)
-        # self.timeEdit1.setGeometry(176, 160, 208, 32)
-        # self.timeEdit1.setFont(QFont('Segoe UI', 9))
-        # self.timeEdit1.setDisplayFormat('h:nn:ss AMPM')
+        # self.HoraCita = QTimeEdit(self.groupBox1)
+        # self.HoraCita.setGeometry(176, 160, 208, 32)
+        # self.HoraCita.setFont(QFont('Segoe UI', 9))
+        # self.HoraCita.setDisplayFormat('h:nn:ss AMPM')
         self.tme_HoraCita = QTimeEdit(self)
         self.tme_HoraCita.setGeometry(176, 190, 208, 32)
         self.tme_HoraCita.setFont(QFont('Segoe UI', 9))
         self.tme_HoraCita.setDisplayFormat('h:mm:ss AP')
         self.tme_HoraCita.setTime(QTime.currentTime())
-        # MAXIMO Y MINIMO DE HORA DE CITA 
+        # MAXIMO Y MINIMO DE HORA DE CITA
         self.tme_HoraCita.setMinimumTime(QTime(8, 0))
         self.tme_HoraCita.setMaximumTime(QTime(18, 0))
 
@@ -101,6 +101,6 @@ class Window(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication([])
-    window = Window()
-    window.show()
+    Paciente_window = WindowPaciente()
+    Paciente_window.show()
     app.exec()
