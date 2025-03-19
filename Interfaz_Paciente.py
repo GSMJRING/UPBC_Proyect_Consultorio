@@ -12,7 +12,6 @@ class WindowPaciente(QMainWindow):
         self.create_widgets()
 
     def create_widgets(self):
-        # Elementos de la ventana de Paciente
         self.groupBox1 = QGroupBox(self)
         self.groupBox1.setGeometry(16, 24, 416, 296)
         self.groupBox1.setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
@@ -21,6 +20,12 @@ class WindowPaciente(QMainWindow):
         self.lEspecialidad.setGeometry(24, 48, 160, 24)
         self.lEspecialidad.setFont(QFont('Segoe UI Black', 16, QFont.Weight.Bold))
         self.lEspecialidad.setText('Especialidad:')
+
+        # Tabla de citas activas del paciente || 03/15/2025 12:34
+        self.TablaCitas = QTableView(self)
+        self.TablaCitas.setGeometry(440, 48, 457, 265)
+        self.TablaCitas.setFont(QFont('Segoe UI', 9))
+        self.TablaCitas.setModel(QStandardItemModel())
         self.lFechadecita = QLabel(self.groupBox1)
         self.lFechadecita.setGeometry(16, 112, 152, 24)
         self.lFechadecita.setFont(QFont('Segoe UI', 16, QFont.Weight.Bold))
@@ -29,17 +34,6 @@ class WindowPaciente(QMainWindow):
         self.lCITASACTIVAS.setGeometry(608, 16, 92, 24)
         self.lCITASACTIVAS.setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
         self.lCITASACTIVAS.setText('CITAS ACTIVAS')
-
-        # Tabla de citas activas del paciente || 03/15/2025 12:34
-        self.TablaCitas = QTableView(self)
-        self.TablaCitas.setGeometry(440, 48, 457, 265)
-        self.TablaCitas.setFont(QFont('Segoe UI', 9))
-        self.TablaCitas.setModel(QStandardItemModel())
-        self.TablaCitas.horizontalHeader().setStretchLastSection(True)
-        self.TablaCitas.verticalHeader().setVisible(False)
-        self.TablaCitas.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-
-
         # Boton cerrar sesion
         self.bCerrarSesion = QPushButton(self)
         self.bCerrarSesion.setGeometry(736, 336, 120, 40)
