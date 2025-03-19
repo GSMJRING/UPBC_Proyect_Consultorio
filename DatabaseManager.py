@@ -16,8 +16,8 @@ class DatabaseManager:
         # Configuración de la conexión a la base de datos
         self.host="localhost:3306"
         self.user="root"
-        #self.password="Aurora120601@" # Robbie
-        self.password="Capgemini2008" # Marco
+        self.password="Aurora120601@" # Robbie
+        #self.password="Capgemini2008" # Marco
         self.database="consultoriomedico"
         self.connection = None
          
