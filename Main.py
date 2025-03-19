@@ -35,6 +35,7 @@ class LogInWindow(QMainWindow):
 
         self.setWindowIcon(QIcon('C:\Consultorio\Login.ico'))  # Icono de la ventana de la aplicacion
         self.LogInRutaIMG = "C:\Consultorio\DM_Login.png" # Ruta de la imagen de inicio de sesion
+        
 
         self.resize(305, 416)
         self.setWindowTitle('Consultorio Medico || LogIn')
