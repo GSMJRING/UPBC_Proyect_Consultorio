@@ -10,6 +10,7 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import QPixmap # Importar la clase QPixmap para la imagen de inicio de sesion
 from ConsultorioMedico_Admin import WindowAdmin  # Importar la clase WindowAdmin
 from Interfaz_Paciente import WindowPaciente  # Importar la clase WindowPaciente
+# Esta es la version OK
 
 # Conexion a base de datos
 #from ConsultorioMedico_LogIn_Function import *  # Importar la clase LoginSystem base de datos || Database ConsultorioMedico
@@ -34,6 +35,7 @@ class LogInWindow(QMainWindow):
 
         self.setWindowIcon(QIcon('C:\Consultorio\Login.ico'))  # Icono de la ventana de la aplicacion
         self.LogInRutaIMG = "C:\Consultorio\DM_Login.png" # Ruta de la imagen de inicio de sesion
+        
 
         self.resize(305, 416)
         self.setWindowTitle('Consultorio Medico || LogIn')
