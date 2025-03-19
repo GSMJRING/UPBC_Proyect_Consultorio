@@ -10,7 +10,6 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import QPixmap # Importar la clase QPixmap para la imagen de inicio de sesion
 from ConsultorioMedico_Admin import WindowAdmin  # Importar la clase WindowAdmin
 from Interfaz_Paciente import WindowPaciente  # Importar la clase WindowPaciente
-# Esta es la version OK
 
 # Conexion a base de datos
 #from ConsultorioMedico_LogIn_Function import *  # Importar la clase LoginSystem base de datos || Database ConsultorioMedico

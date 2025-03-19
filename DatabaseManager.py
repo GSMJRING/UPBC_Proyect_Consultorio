@@ -4,13 +4,6 @@ from hashlib import sha256 # Encruptador de contraseña basado en SHA256
 #from ConsultorioMedico_LogIn_Function import * # Importar la clase LoginSystem base de datos || Database ConsultorioMedico
 
 class DatabaseManager:
-    # Conexion a la base de datos || Credenciales de acceso
-    # def __init__(self, host, user, password, database):
-    #     self.host = host
-    #     self.user = user
-    #     self.password = password
-    #     self.database = database
-    #     self.connection = None
     
     def __init__(self):
         # Configuración de la conexión a la base de datos

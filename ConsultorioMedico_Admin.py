@@ -9,13 +9,6 @@ from DatabaseManager import DatabaseManager
 class WindowAdmin(QMainWindow):
     def __init__(self):
         super().__init__()
-        # # Configuración de la conexión a la base de datos
-        # self.db_manager = DatabaseManager(
-        #     host="localhost",
-        #     user="root",
-        #     password="Capgemini2008",
-        #     database="consultoriomedico"
-        # )
 
         # Nuevo modo de conexion a base de datos
         self.db_manager = DatabaseManager()
