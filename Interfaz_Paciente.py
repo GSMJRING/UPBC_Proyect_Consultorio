@@ -40,6 +40,7 @@ class Window(QMainWindow):
         self.bCerrarSesion.setFont(QFont('Segoe UI', 9))
         self.bCerrarSesion.setText('Cerrar Sesion')
         self.bCerrarSesion.clicked.connect(self.bCerrarSesion_clicked)
+        self.bCerrarSesion.setStyleSheet('background-color: rgb(255, 0, 0);')
         # Boton confirmar cita
         self.bConfirmarCita = QPushButton(self.groupBox1)
         self.bConfirmarCita.setGeometry(24, 216, 344, 56)
