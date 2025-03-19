@@ -27,6 +27,7 @@ class WindowAdmin(QMainWindow):
         self.resize(952, 632)
         self.setWindowTitle('Consultorio Medico || Administrador')
         self.setCentralWidget(QWidget(self))
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
         self.create_widgets()
 
 
