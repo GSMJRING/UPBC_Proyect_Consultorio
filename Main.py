@@ -106,7 +106,7 @@ class LogInWindow(QMainWindow):
                     self.open_admin_window()
                 else:
                     QMessageBox.information(self, "Inicio de sesión exitoso", "¡Bienvenido!")
-                    self.open_paciente_window()
+                    self.open_paciente_window(user_data) # Pasar los datos del usuario a la ventana del paciente
             else:
                 QMessageBox.warning(self, "Error", "Nombre de usuario o contraseña incorrectos.")
                 self.txt_Pass.clear()  # Limpiar el campo de contraseña
