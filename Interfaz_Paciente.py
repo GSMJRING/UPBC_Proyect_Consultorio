@@ -1,3 +1,5 @@
+# ↓↓↓↓↓↓↓
+# Para abrir la interfaz de paciente, se debe ejecutar el archivo Main.py y luego iniciar sesión con un usuario de tipo paciente.
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
@@ -6,9 +8,10 @@ class WindowPaciente(QMainWindow):
 
     def __init__(self, user_data):
         super().__init__()
-        self.resize(912, 394)
+        self.resize(912, 412)
         self.user_data = user_data  # Datos del usuario que inició sesión
         self.id_paciente = user_data[0]  # ID del paciente
+        #self.mostrar_saludo()  # Mostrar saludo con el nombre del usuario
         self.setWindowTitle('Consultorio Medico || Paciente')
         self.setCentralWidget(QWidget(self))
         self.create_widgets()
@@ -16,7 +19,7 @@ class WindowPaciente(QMainWindow):
 
     def create_widgets(self):
         self.groupBox1 = QGroupBox(self)
-        self.groupBox1.setGeometry(16, 24, 416, 296)
+        self.groupBox1.setGeometry(16, 48, 416, 296)
         self.groupBox1.setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
         self.groupBox1.setTitle('Agendar Cita')
         self.lEspecialidad = QLabel(self.groupBox1)
@@ -35,22 +38,24 @@ class WindowPaciente(QMainWindow):
         self.lHoradecita.setGeometry(16, 160, 152, 34)
         self.lHoradecita.setFont(QFont('Segoe UI', 16, QFont.Weight.Bold))
         self.lHoradecita.setText('Hora de cita:')
+
          # Label para mostrar el saludo
         self.lSaludo = QLabel(self)
         self.lSaludo.setGeometry(16, 8, 400, 24)
         self.lSaludo.setFont(QFont('Segoe UI', 12, QFont.Weight.Bold))
-        self.lSaludo.setText(f"Bienvenido, {self.user_data[1]} {self.user_data[2]}")  # Nombre y apellido
+        # UserNAme (índice 1)
+        self.lSaludo.setText(f" Bienvenido: {self.user_data[1]} ")  # Nombre y apellido
 
 
         # Tabla de citas activas del paciente || 03/15/2025 12:34
         self.TablaCitas = QTableView(self)
-        self.TablaCitas.setGeometry(440, 48, 457, 265)
+        self.TablaCitas.setGeometry(440, 48, 457, 296)
         self.TablaCitas.setFont(QFont('Segoe UI', 9))
         self.TablaCitas.setModel(QStandardItemModel())
 
         # Boton cerrar sesion
         self.bCerrarSesion = QPushButton(self)
-        self.bCerrarSesion.setGeometry(776, 344, 120, 40)
+        self.bCerrarSesion.setGeometry(776, 360, 120, 40)
         self.bCerrarSesion.setFont(QFont('Segoe UI', 9))
         self.bCerrarSesion.setText('Cerrar Sesion')
         self.bCerrarSesion.clicked.connect(self.bCerrarSesion_clicked)
@@ -96,10 +101,10 @@ class WindowPaciente(QMainWindow):
         # MAXIMO Y MINIMO DE HORA DE CITA
         self.tme_HoraCita.setMinimumTime(QTime(8, 0))
         self.tme_HoraCita.setMaximumTime(QTime(18, 0))
-        
+
         # Boton cancelar cita
         self.btnCancelarCita = QPushButton(self)
-        self.btnCancelarCita.setGeometry(448, 320, 208, 40)
+        self.btnCancelarCita.setGeometry(440, 352, 208, 40)
         self.btnCancelarCita.setFont(QFont('Segoe UI', 9))
         self.btnCancelarCita.setStyleSheet('background-color: rgb(245, 120, 11);')
         self.btnCancelarCita.setText('Cancelar Cita Seleccionada')
@@ -117,7 +122,6 @@ class WindowPaciente(QMainWindow):
     def btnCancelarCita_clicked(self, checked):
         # ToDo insert source code here
         pass
-
 
 if __name__ == "__main__":
     app = QApplication([])

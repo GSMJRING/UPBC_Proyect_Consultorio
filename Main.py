@@ -130,9 +130,9 @@ class LogInWindow(QMainWindow):
         self.admin_window.show()
         self.close()
 
-    def open_paciente_window(self):
+    def open_paciente_window(self, user_data): # Mandar datos de usuario a la ventana del paciente
         """Abre la ventana de paciente."""
-        self.paciente_window = WindowPaciente()
+        self.paciente_window = WindowPaciente(user_data=user_data)
         self.paciente_window.show()
         self.close()
 
