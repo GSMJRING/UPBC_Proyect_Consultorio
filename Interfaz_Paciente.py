@@ -4,9 +4,11 @@ from PyQt6.QtCore import *
 
 class WindowPaciente(QMainWindow):
 
-    def __init__(self):
+    def __init__(self, user_data):
         super().__init__()
         self.resize(912, 394)
+        self.user_data = user_data  # Datos del usuario que inició sesión
+        self.id_paciente = user_data[0]  # ID del paciente
         self.setWindowTitle('Consultorio Medico || Paciente')
         self.setCentralWidget(QWidget(self))
         self.create_widgets()
@@ -33,6 +35,12 @@ class WindowPaciente(QMainWindow):
         self.lHoradecita.setGeometry(16, 160, 152, 34)
         self.lHoradecita.setFont(QFont('Segoe UI', 16, QFont.Weight.Bold))
         self.lHoradecita.setText('Hora de cita:')
+         # Label para mostrar el saludo
+        self.lSaludo = QLabel(self)
+        self.lSaludo.setGeometry(16, 8, 400, 24)
+        self.lSaludo.setFont(QFont('Segoe UI', 12, QFont.Weight.Bold))
+        self.lSaludo.setText(f"Bienvenido, {self.user_data[1]} {self.user_data[2]}")  # Nombre y apellido
+
 
         # Tabla de citas activas del paciente || 03/15/2025 12:34
         self.TablaCitas = QTableView(self)
