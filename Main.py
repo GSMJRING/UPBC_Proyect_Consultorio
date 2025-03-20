@@ -16,7 +16,6 @@ from Interfaz_Paciente import WindowPaciente  # Importar la clase WindowPaciente
 from DatabaseManager import DatabaseManager  # Importar la clase DatabaseManager
 # Clase de inicio de sesion
 
-
 class LogInWindow(QMainWindow):
     # Apartado de dimensiones de ventana y titulo
     def __init__(self):
