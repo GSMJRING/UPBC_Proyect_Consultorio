@@ -103,7 +103,7 @@ class LogInWindow(QMainWindow):
             if is_valid:
                 if  user_data[3] == "administrador":
                     QMessageBox.information(self, "Inicio de sesión exitoso", "¡Bienvenido!")
-                    self.open_admin_window()
+                    self.open_admin_window(user_data)  # Pasar los datos del usuario a la ventana del administrador
                 else:
                     QMessageBox.information(self, "Inicio de sesión exitoso", "¡Bienvenido!")
                     self.open_paciente_window(user_data) # Pasar los datos del usuario a la ventana del paciente
@@ -123,10 +123,10 @@ class LogInWindow(QMainWindow):
         else:
             self.close()  # Fallback to just closing the window if no QApplication instance
 
-    def open_admin_window(self):
+    def open_admin_window(self,user_data):
         """Abre la ventana de administrador."""
         #self.admin_window = WindowAdmin(db_manager=self.login_system)
-        self.admin_window = WindowAdmin()
+        self.admin_window = WindowAdmin(user_data=user_data) # Pasar el Administrador user
         self.admin_window.show()
         self.close()
 

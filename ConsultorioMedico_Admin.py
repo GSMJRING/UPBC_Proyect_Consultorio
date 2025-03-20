@@ -7,7 +7,7 @@ from hashlib import sha256 # Encruptador de contraseña basado en SHA256
 from DatabaseManager import DatabaseManager
 
 class WindowAdmin(QMainWindow):
-    def __init__(self):
+    def __init__(self, user_data):
         super().__init__()
 
         # Nuevo modo de conexion a base de datos
@@ -17,6 +17,7 @@ class WindowAdmin(QMainWindow):
         self.setWindowIcon(QIcon('C:\Consultorio\Admin_Logo.ico'))  # Icono de la ventana de la aplicacion
         self.RutaImagen = "C:\Consultorio\DM_Admin.png" # Ruta de la imagen
 
+        self.user_data = user_data  # Datos del usuario que inició sesión
         self.resize(952, 632)
         self.setWindowTitle('Consultorio Medico || Administrador')
         self.setCentralWidget(QWidget(self))
@@ -62,28 +63,28 @@ class WindowAdmin(QMainWindow):
 
         # Labels generales
         self.lNombre = QLabel(self)
-        self.lNombre.setGeometry(48, 232, 120, 24)
+        self.lNombre.setGeometry(40, 256, 120, 24)
         self.lNombre.setFont(QFont('Segoe UI', 9))
         self.lNombre.setText('Nombre:')
 
         self.lApellido = QLabel(self)
-        self.lApellido.setGeometry(48, 272, 120, 24)
+        self.lApellido.setGeometry(40, 296, 120, 24)
         self.lApellido.setFont(QFont('Segoe UI', 9))
         self.lApellido.setText('Apellido:')
 
         self.lTelefono = QLabel(self)
-        self.lTelefono.setGeometry(48, 320, 120, 24)
+        self.lTelefono.setGeometry(40, 344, 120, 24)
         self.lTelefono.setFont(QFont('Segoe UI', 9))
         self.lTelefono.setText('Telefono:')
 
         self.lEmail = QLabel(self)
-        self.lEmail.setGeometry(48, 360, 120, 24)
+        self.lEmail.setGeometry(40, 384, 120, 24)
         self.lEmail.setFont(QFont('Segoe UI', 9))
         self.lEmail.setText('Email:')
 
         # GroupBox - Informacion de usuario
         self.groupBox1 = QGroupBox(self)
-        self.groupBox1.setGeometry(32, 32, 424, 176)
+        self.groupBox1.setGeometry(24, 56, 424, 176)
         self.groupBox1.setFont(QFont('Segoe UI', 9))
         self.groupBox1.setTitle('Informacion de Usuario')
 
@@ -121,36 +122,36 @@ class WindowAdmin(QMainWindow):
 
         # ComboBox de especialidades
         self.cmbEspecialidad = QComboBox(self)
-        self.cmbEspecialidad.setGeometry(184, 392, 264, 32)
+        self.cmbEspecialidad.setGeometry(176, 416, 264, 32)
         self.cmbEspecialidad.setFont(QFont('Segoe UI', 9))
         self.cmbEspecialidad.setModel(QStringListModel(['Medico General', 'Ginecologia', 'Pediatra', 'Odontologia', 'Psiquiatra', 'Psicologia', 'Urologo', 'Nefrologo']))
         self.cmbEspecialidad.hide() # Ocultar de forma inicial
 
         # LBL de funcion automatica en cuestion del CMB
         self.label1 = QLabel(self)
-        self.label1.setGeometry(48, 400, 120, 24)
+        self.label1.setGeometry(40, 424, 120, 24)
         self.label1.setFont(QFont('Segoe UI', 9))
         self.label1.setText('Fecha de Nacimiento:')
 
         # Campos de texto
         self.txt_Nombre = QLineEdit(self)
-        self.txt_Nombre.setGeometry(184, 224, 273, 25)
+        self.txt_Nombre.setGeometry(176, 248, 273, 25)
         self.txt_Nombre.setFont(QFont('Segoe UI', 9))
 
         self.txt_Apellido = QLineEdit(self)
-        self.txt_Apellido.setGeometry(184, 264, 273, 25)
+        self.txt_Apellido.setGeometry(176, 288, 273, 25)
         self.txt_Apellido.setFont(QFont('Segoe UI', 9))
 
         self.txt_Telefono = QLineEdit(self)
-        self.txt_Telefono.setGeometry(184, 312, 273, 25)
+        self.txt_Telefono.setGeometry(176, 336, 273, 25)
         self.txt_Telefono.setFont(QFont('Segoe UI', 9))
 
         self.txt_Email = QLineEdit(self)
-        self.txt_Email.setGeometry(184, 352, 273, 25)
+        self.txt_Email.setGeometry(176, 376, 273, 25)
         self.txt_Email.setFont(QFont('Segoe UI', 9))
 
         self.dte_Nacimiento = QDateEdit(self)
-        self.dte_Nacimiento.setGeometry(184, 392, 273, 33)
+        self.dte_Nacimiento.setGeometry(176, 416, 273, 33)
         self.dte_Nacimiento.setFont(QFont('Segoe UI', 9))
         self.dte_Nacimiento.setCalendarPopup(True)
         self.dte_Nacimiento.setDate(QDate.currentDate())
@@ -176,6 +177,11 @@ class WindowAdmin(QMainWindow):
         self.lblNotificacionPWS.setStyleSheet("color: lightblue;")
         self.lblNotificacionPWS.setText('* Si se requiere actualizar el usuario: El cambio de password es necesario. ')
 
+        # Label de usuario logeado
+        self.lAdministrator = QLabel(self)
+        self.lAdministrator.setGeometry(16, 8, 312, 24)
+        self.lAdministrator.setFont(QFont('Segoe UI', 12, QFont.Weight.Bold))
+        self.lAdministrator.setText(f" Bienvenido: {self.user_data[1]} ")  # Nombre y apellido
         #pass
 
     def update_label(self, text):
