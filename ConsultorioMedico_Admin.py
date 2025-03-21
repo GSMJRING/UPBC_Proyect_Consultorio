@@ -22,6 +22,8 @@ class WindowAdmin(QMainWindow):
         self.setWindowTitle('Consultorio Medico || Administrador')
         self.setCentralWidget(QWidget(self))
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
+        self.setWindowOpacity(0.90)  # Opacidad de la ventana
+        self.setStyleSheet('background-color: rgb(0, 0, 0);')  # Color de fondo de la ventana
         self.create_widgets()
 
 

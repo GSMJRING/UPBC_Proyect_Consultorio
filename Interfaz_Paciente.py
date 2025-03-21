@@ -23,7 +23,8 @@ class WindowPaciente(QMainWindow):
         self.setCentralWidget(QWidget(self))
         self.create_widgets()
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
-        
+        self.setWindowOpacity(0.90)  # Opacidad de la ventana
+        self.setStyleSheet('background-color: rgb(0, 0, 0);')  # Color de fondo de la ventana
         self.cargar_medicos()  # Cargar los médicos al iniciar la ventana
 
     def create_widgets(self):
@@ -92,9 +93,16 @@ class WindowPaciente(QMainWindow):
         self.cmbEspecialidad.setPlaceholderText("Seleccione un médico")
         self.cmbEspecialidad.currentIndexChanged.connect(self.ActualizarLabelMedico) # Actualizar la especialidad del médico
 
+        self.lEspecialidad1 = QLabel(self.groupBox1)
+        # Ajuste de geometria: X, Y, Ancho, Alto
+        self.lEspecialidad1.setGeometry(8, 40, 160, 34) # (8, 96, 160, 24)
+        self.lEspecialidad1.setFont(QFont('Segoe UI Black', 16, QFont.Weight.Bold))
+        self.lEspecialidad1.setText('Especialidad:')
+
         self.lCIRUJANO = QLabel(self.groupBox1)
         self.lCIRUJANO.setGeometry(168, 88, 160, 34)
-        self.lCIRUJANO.setFont(QFont('Segoe UI Black', 16))
+        self.lCIRUJANO.setFont(QFont('Segoe UI Black',))
+        self.lCIRUJANO.setStyleSheet('color: rgb(23, 255, 237);')
         self.lCIRUJANO.setText('------')
 
         self.dte_Nacimiento = QDateEdit(self)
@@ -124,13 +132,6 @@ class WindowPaciente(QMainWindow):
         self.btnCancelarCita.setStyleSheet('background-color: rgb(245, 120, 11);')
         self.btnCancelarCita.setText('Cancelar Cita Seleccionada')
         self.btnCancelarCita.clicked.connect(self.btnCancelarCita_clicked)
-        #self.HoraCita.setGeometry(176, 208, 208, 32)
-        #self.FechaCita.setGeometry(176, 160, 208, 32)
-        self.lEspecialidad1 = QLabel(self.groupBox1)
-        # Ajuste de geometria: X, Y, Ancho, Alto
-        self.lEspecialidad1.setGeometry(8, 40, 160, 34) # (8, 96, 160, 24)
-        self.lEspecialidad1.setFont(QFont('Segoe UI Black', 16, QFont.Weight.Bold))
-        self.lEspecialidad1.setText('Especialidad:')
 
         pass
 
