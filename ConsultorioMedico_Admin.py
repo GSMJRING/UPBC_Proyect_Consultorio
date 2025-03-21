@@ -18,7 +18,8 @@ class WindowAdmin(QMainWindow):
         self.RutaImagen = "C:\Consultorio\DM_Admin.png" # Ruta de la imagen
 
         self.user_data = user_data  # Datos del usuario que inició sesión
-        self.resize(952, 632)
+        #self.resize(952, 632)
+        self.setFixedSize(952, 632) # No se puede cambiar el tamaño de la ventana
         self.setWindowTitle('Consultorio Medico || Administrador')
         self.setCentralWidget(QWidget(self))
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar

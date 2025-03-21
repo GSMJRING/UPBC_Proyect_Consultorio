@@ -20,7 +20,8 @@ class WindowPaciente(QMainWindow):
         self.id_Cita_Paciente = 0  # ID del paciente seleccionado
 
         # Configuración de la ventana
-        self.resize(980, 422)
+        #self.resize(980, 422)
+        self.setFixedSize(980, 422) # No se puede cambiar el tamaño de la ventana
         self.setWindowTitle('Consultorio Medico || Paciente')
         self.setCentralWidget(QWidget(self))
         self.create_widgets()
@@ -136,8 +137,8 @@ class WindowPaciente(QMainWindow):
         self.tme_HoraCita.setTime(QTime.currentTime())
         self.tme_HoraCita.setDisplayFormat('HH:mm:ss AP')
         # MAXIMO Y MINIMO DE HORA DE CITA
-        self.tme_HoraCita.setMinimumTime(QTime(8, 0))
-        self.tme_HoraCita.setMaximumTime(QTime(18, 0))
+        # self.tme_HoraCita.setMinimumTime(QTime(8, 0))
+        # self.tme_HoraCita.setMaximumTime(QTime(18, 0))
 
         # Boton cancelar cita
         self.btnCancelarCita = QPushButton(self)
@@ -159,9 +160,9 @@ class WindowPaciente(QMainWindow):
             QMessageBox.critical(self, "Error", "Seleccione un médico.")
             return
         
-        # if self.tme_HoraCita.time() < QTime(8, 0) or self.tme_HoraCita.time() > QTime(18, 0):
-        #     QMessageBox.critical(self, "Error", "La hora de la cita debe estar entre las 8:00 AM y las 6:00 PM.")
-        #     return
+        if self.tme_HoraCita.time() < QTime(8, 0) or self.tme_HoraCita.time() > QTime(18, 0):
+             QMessageBox.critical(self, "Error", "La hora de la cita debe estar entre las 8:00 AM y las 6:00 PM.")
+             return
         
         ID_Paciente = self.id_Cita_Paciente
         ID_Medico = self.id_Doctor
