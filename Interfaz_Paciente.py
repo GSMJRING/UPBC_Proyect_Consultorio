@@ -154,6 +154,15 @@ class WindowPaciente(QMainWindow):
         pass
 
     def bConfirmarCita_clicked(self, checked):
+        
+        if self.id_Doctor == 0:
+            QMessageBox.critical(self, "Error", "Seleccione un médico.")
+            return
+        
+        # if self.tme_HoraCita.time() < QTime(8, 0) or self.tme_HoraCita.time() > QTime(18, 0):
+        #     QMessageBox.critical(self, "Error", "La hora de la cita debe estar entre las 8:00 AM y las 6:00 PM.")
+        #     return
+        
         ID_Paciente = self.id_Cita_Paciente
         ID_Medico = self.id_Doctor
         Fecha_Hora = f"{self.dte_Nacimiento.date().toString('yyyy-MM-dd')} {self.tme_HoraCita.time().toString('HH:mm:ss')}"
