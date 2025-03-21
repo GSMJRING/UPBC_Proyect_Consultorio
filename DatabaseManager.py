@@ -62,20 +62,6 @@ class DatabaseManager:
 # _________________________________________________________________________________________________________________________
 # Storeprocedures MySQL
 
-# prueba de nueva IDE 
-    def obtener_especialidades(self): # Obtener especialidades
-        """Llama al stored procedure para obtener la lista de especialidades."""
-        try:
-            cursor = self.connection.cursor()
-            cursor.callproc("ObtenerEspecialidades")
-            resultados = []
-            for result in cursor.stored_results():
-                resultados = result.fetchall()
-            cursor.close()
-            return True, resultados
-        except Error as e:
-            return False, f"No se pudo obtener la lista de especialidades: {e}"
-
     def agregar_usuario(self, nombre_usuario, contrasena, rol, nombre, apellido, telefono, email, fecha_nacimiento=None, especialidad=None):
         """Llama al stored procedure para agregar un nuevo usuario."""
         try:
