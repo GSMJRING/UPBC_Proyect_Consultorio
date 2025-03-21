@@ -20,7 +20,7 @@ class WindowPaciente(QMainWindow):
         self.id_Cita_Paciente = 0  # ID del paciente seleccionado
 
         # Configuración de la ventana
-        self.resize(912, 422)
+        self.resize(980, 422)
         self.setWindowTitle('Consultorio Medico || Paciente')
         self.setCentralWidget(QWidget(self))
         self.create_widgets()
@@ -64,7 +64,7 @@ class WindowPaciente(QMainWindow):
 
         # Tabla de citas activas del paciente || 03/15/2025 12:34
         self.TablaCitas = QTableView(self)
-        self.TablaCitas.setGeometry(440, 48, 457, 296)
+        self.TablaCitas.setGeometry(440, 48, 528, 296)
         self.TablaCitas.setFont(QFont('Segoe UI', 9))
         self.TablaCitas.setStyleSheet('color: rgb(255, 255, 255);')
         self.TablaCitas.setModel(QStandardItemModel())
