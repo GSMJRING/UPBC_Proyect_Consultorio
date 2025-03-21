@@ -151,8 +151,15 @@ class WindowPaciente(QMainWindow):
         pass
 
     def bCerrarSesion_clicked(self, checked):
-        # ToDo insert source code here
+        self.close()
+        self.mostrar_ventana_login()
         pass
+
+    def mostrar_ventana_login(self):
+        """Muestra la ventana de inicio de sesión."""
+        from Main import LogInWindow  # Importar la ventana de inicio de sesión
+        self.ventana_login = LogInWindow()
+        self.ventana_login.show()
 
     def bConfirmarCita_clicked(self, checked):
         

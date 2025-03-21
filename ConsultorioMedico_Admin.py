@@ -230,7 +230,15 @@ class WindowAdmin(QMainWindow):
             QMessageBox.critical(self, "Error", message)
 
     def bCerrarventana_clicked(self):
-        QApplication.instance().quit()  # Cerrar la aplicacion
+        #QApplication.instance().quit()  # Cerrar la aplicacion
+        self.close()  # Cerrar la ventana actual
+        self.mostrar_ventana_login()  # Mostrar la ventana de inicio de sesión
+    
+    def mostrar_ventana_login(self):
+        """Muestra la ventana de inicio de sesión."""
+        from Main import LogInWindow  # Importar la ventana de inicio de sesión
+        self.ventana_login = LogInWindow()
+        self.ventana_login.show()
 
     def bVerUsuarios_clicked(self):
         success, usuarios = self.db_manager.obtener_usuarios_activos()
