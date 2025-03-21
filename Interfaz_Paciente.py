@@ -3,19 +3,27 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
+from DatabaseManager import DatabaseManager
 
 class WindowPaciente(QMainWindow):
 
     def __init__(self, user_data):
         super().__init__()
-        self.resize(912, 412)
+        
+        # Nuevo modo de conexion a base de datos
+        self.db_manager = DatabaseManager()
+        self.db_manager.connect()
+
         self.user_data = user_data  # Datos del usuario que inició sesión
         self.id_paciente = user_data[0]  # ID del paciente
-        #self.mostrar_saludo()  # Mostrar saludo con el nombre del usuario
+
+        # Configuración de la ventana
+        self.resize(912, 412) 
         self.setWindowTitle('Consultorio Medico || Paciente')
         self.setCentralWidget(QWidget(self))
         self.create_widgets()
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
+        self.cargar_medicos()  # Cargar los médicos al iniciar la ventana 
 
     def create_widgets(self):
         self.groupBox1 = QGroupBox(self)
@@ -70,17 +78,17 @@ class WindowPaciente(QMainWindow):
         self.bConfirmarCita.setText('Confirmar Cita')
         self.bConfirmarCita.clicked.connect(self.bConfirmarCita_clicked)
 
-        # Selector de especialidad
+        # # Selector de especialidad
+        # self.cmbEspecialidad = QComboBox(self.groupBox1)
+        # self.cmbEspecialidad.setGeometry(168, 40, 216, 40)
+        # self.cmbEspecialidad.setFont(QFont('Segoe UI', 9))
+        # self.cmbEspecialidad.setModel(QStringListModel(['Medico General', 'Ginecologia', 'Pediatra', 'Odontologia', 'Psiquiatra', 'Psicologia', 'Urologo', 'Nefrologo']))
+
+        # ComboBox para seleccionar el médico
         self.cmbEspecialidad = QComboBox(self.groupBox1)
         self.cmbEspecialidad.setGeometry(168, 40, 216, 40)
         self.cmbEspecialidad.setFont(QFont('Segoe UI', 9))
-        self.cmbEspecialidad.setModel(QStringListModel(['Medico General', 'Ginecologia', 'Pediatra', 'Odontologia', 'Psiquiatra', 'Psicologia', 'Urologo', 'Nefrologo']))
-
-        # Selector de fecha de cita
-        # self.FechaCita = QDateEdit(self.groupBox1)
-        # self.FechaCita.setGeometry(176, 104, 208, 32)
-        # self.FechaCita.setFont(QFont('Segoe UI', 9))
-        # self.FechaCita.setDisplayFormat('m/d/yyyy')
+        self.cmbEspecialidad.setPlaceholderText("Seleccione un médico")
 
         self.dte_Nacimiento = QDateEdit(self)
         self.dte_Nacimiento.setGeometry(176, 135, 208, 32)
@@ -122,6 +130,17 @@ class WindowPaciente(QMainWindow):
     def btnCancelarCita_clicked(self, checked):
         # ToDo insert source code here
         pass
+
+    def cargar_medicos(self):
+        """Carga los nombres de los médicos en el ComboBox."""
+        success, medicos = self.db_manager.obtener_medicos()
+        if success:
+            self.cmbEspecialidad.clear()
+            for medico in medicos:
+                nombre_completo = f"{medico[1]} {medico[2]}"  # Nombre y apellido
+                self.cmbEspecialidad.addItem(nombre_completo, medico[0])  # Guardar el ID del médico como dato
+        else:
+            QMessageBox.critical(self, "Error", medicos)
 
 if __name__ == "__main__":
     app = QApplication([])

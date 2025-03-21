@@ -141,4 +141,18 @@ class DatabaseManager:
         except Error as e:
             return False, f"No se pudo actualizar el usuario: {e}"
         
+    # Combobox de especialidades en la interfaz de médico
+    def obtener_medicos(self):
+        """Llama al stored procedure para obtener la lista de médicos."""
+        try:
+            cursor = self.connection.cursor()
+            cursor.callproc("ObtenerMedicos")
+            resultados = []
+            for result in cursor.stored_results():
+                resultados = result.fetchall()
+            cursor.close()
+            return True, resultados
+        except Error as e:
+            return False, f"No se pudo obtener la lista de médicos: {e}"
+        
     
