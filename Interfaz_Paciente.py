@@ -32,7 +32,7 @@ class WindowPaciente(QMainWindow):
         self.groupBox1.setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
         self.groupBox1.setTitle('Agendar Cita')
         self.lMedico = QLabel(self.groupBox1)
-        self.lMedico.setGeometry(48, 40, 104, 34)
+        self.lMedico.setGeometry(48, 96, 160, 24) # (48, 40, 104, 34)
         self.lMedico.setFont(QFont('Segoe UI Black', 16, QFont.Weight.Bold))
         self.lMedico.setText('Medico: ')
         self.lFechadecita = QLabel(self.groupBox1)
@@ -127,20 +127,12 @@ class WindowPaciente(QMainWindow):
         #self.HoraCita.setGeometry(176, 208, 208, 32)
         #self.FechaCita.setGeometry(176, 160, 208, 32)
         self.lEspecialidad1 = QLabel(self.groupBox1)
-        self.lEspecialidad1.setGeometry(8, 96, 160, 24)
+        # Ajuste de geometria: X, Y, Ancho, Alto
+        self.lEspecialidad1.setGeometry(8, 40, 160, 34) # (8, 96, 160, 24)
         self.lEspecialidad1.setFont(QFont('Segoe UI Black', 16, QFont.Weight.Bold))
         self.lEspecialidad1.setText('Especialidad:')
 
         pass
-
-    def ActualizarLabelMedico(self):
-        medico_id = self.cmbEspecialidad.currentData()
-        success, medico = self.db_manager.obtener_detalles_usuario(medico_id)
-        if success:
-            self.lCIRUJANO.setText(medico[3])  # Especialidad del médico
-        else:
-            QMessageBox.critical(self, "Error", medico)
-
 
     def bCerrarSesion_clicked(self, checked):
         # ToDo insert source code here
@@ -154,15 +146,30 @@ class WindowPaciente(QMainWindow):
         # ToDo insert source code here
         pass
 
+    def ActualizarLabelMedico(self):
+        # use consultoriomedico;
+        # SELECT * FROM consultoriomedico.medicos where id_medico = 2;
+        medico_id = self.cmbEspecialidad.currentData() 
+        success, medicos = self.db_manager.obtener_medicos()
+        if success:
+            for medico in medicos:
+                if medico[0] == medico_id:
+                    self.lCIRUJANO.setText(medico[1]) # Especialidad del médico [3]
+                    break
+        else:
+            QMessageBox.critical(self, "Error", medicos)
+            
     def cargar_medicos(self):
         """Carga los nombres de los médicos en el ComboBox."""
         success, medicos = self.db_manager.obtener_medicos()
         if success:
             self.cmbEspecialidad.clear()
             for medico in medicos:
-                nombre_completo = f"{medico[1]} {medico[2]}"  # Nombre y apellido
+                #nombre_completo = f"{medico[1]} {medico[2]}"  # Nombre y apellido
+                nombre_completo = f"{medico[3]}"  # Nombre y apellido
                 self.cmbEspecialidad.addItem(nombre_completo, medico[0])  # Guardar el ID del médico como dato
-                self.lCIRUJANO.setText(medico[3])  # Especialidad del médico
+                #self.lCIRUJANO.setText(medico[3])  # Especialidad del médico
+                #self.lCIRUJANO.setText(medico[1])  # Especialidad del médico
         else:
             QMessageBox.critical(self, "Error", medicos)
 
