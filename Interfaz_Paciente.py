@@ -23,6 +23,7 @@ class WindowPaciente(QMainWindow):
         self.setCentralWidget(QWidget(self))
         self.create_widgets()
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
+        
         self.cargar_medicos()  # Cargar los médicos al iniciar la ventana
 
     def create_widgets(self):
@@ -89,6 +90,7 @@ class WindowPaciente(QMainWindow):
         self.cmbEspecialidad.setGeometry(168, 32, 216, 40)
         self.cmbEspecialidad.setFont(QFont('Segoe UI', 9))
         self.cmbEspecialidad.setPlaceholderText("Seleccione un médico")
+        self.cmbEspecialidad.currentIndexChanged.connect(self.ActualizarLabelMedico) # Actualizar la especialidad del médico
 
         self.lCIRUJANO = QLabel(self.groupBox1)
         self.lCIRUJANO.setGeometry(168, 88, 160, 34)
@@ -130,6 +132,15 @@ class WindowPaciente(QMainWindow):
         self.lEspecialidad1.setText('Especialidad:')
 
         pass
+
+    def ActualizarLabelMedico(self):
+        medico_id = self.cmbEspecialidad.currentData()
+        success, medico = self.db_manager.obtener_detalles_usuario(medico_id)
+        if success:
+            self.lCIRUJANO.setText(medico[3])  # Especialidad del médico
+        else:
+            QMessageBox.critical(self, "Error", medico)
+
 
     def bCerrarSesion_clicked(self, checked):
         # ToDo insert source code here
