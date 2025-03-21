@@ -82,6 +82,9 @@ class LogInWindow(QMainWindow):
         self.lPassword.setFont(QFont('Segoe UI', 16, QFont.Weight.Bold))
         self.lPassword.setText('Password')
 
+        # Si presiona la tecla Enter en el campo de contraseña, se inicia sesión
+        self.txt_Pass.returnPressed.connect(self.bLogIn.click)
+
         pass
 
     # Funciones al presionar los botones
