@@ -155,4 +155,14 @@ class DatabaseManager:
         except Error as e:
             return False, f"No se pudo obtener la lista de médicos: {e}"
         
+    def agendar_cita(self, id_paciente, id_medico, fecha_hora):
+        try:
+            cursor = self.connection.cursor()
+            cursor.callproc("CrearCita", (id_paciente, id_medico, fecha_hora))
+            self.connection.commit()
+            cursor.close()
+            return True, "Cita agendada exitosamente."
+        except Exception as e:
+            return False, f"Error al agendar la cita: {e}"
+        
     

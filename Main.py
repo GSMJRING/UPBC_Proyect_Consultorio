@@ -33,6 +33,7 @@ class LogInWindow(QMainWindow):
         self.setCentralWidget(QWidget(self))
         self.create_widgets()
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
+        self.txt_User.setFocus()  # Enfocar el campo de usuario
 
     # Apartado de contenido de la ventana
     def create_widgets(self):

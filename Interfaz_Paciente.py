@@ -16,6 +16,8 @@ class WindowPaciente(QMainWindow):
 
         self.user_data = user_data  # Datos del usuario que inició sesión
         self.id_paciente = user_data[0]  # ID del paciente
+        self.id_Doctor = 0  # ID del médico seleccionado
+        self.id_Cita_Paciente = 0  # ID del paciente seleccionado
 
         # Configuración de la ventana
         self.resize(912, 422)
@@ -25,7 +27,9 @@ class WindowPaciente(QMainWindow):
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
         self.setWindowOpacity(0.90)  # Opacidad de la ventana
         self.setStyleSheet('background-color: rgb(0, 0, 0);')  # Color de fondo de la ventana
+        
         self.cargar_medicos()  # Cargar los médicos al iniciar la ventana
+        self.CargarUsuarioDetails()  # Cargar los detalles del usuario || ID del paciente
 
     def create_widgets(self):
         self.groupBox1 = QGroupBox(self)
@@ -54,7 +58,7 @@ class WindowPaciente(QMainWindow):
         self.lSaludo.setGeometry(16, 8, 400, 24)
         self.lSaludo.setFont(QFont('Segoe UI', 12, QFont.Weight.Bold))
         # UserNAme (índice 1)
-        self.lSaludo.setText(f" Bienvenido: {self.user_data[1]} ")  # Nombre y apellido
+        self.lSaludo.setText(f" Bienvenido: {self.user_data[1]} ")  # Nombre de usuario
 
 
         # Tabla de citas activas del paciente || 03/15/2025 12:34
@@ -91,7 +95,7 @@ class WindowPaciente(QMainWindow):
         self.cmbEspecialidad.setGeometry(168, 32, 216, 40)
         self.cmbEspecialidad.setFont(QFont('Segoe UI', 9))
         self.cmbEspecialidad.setPlaceholderText("Seleccione un médico")
-        self.cmbEspecialidad.currentIndexChanged.connect(self.ActualizarLabelMedico) # Actualizar la especialidad del médico
+        self.cmbEspecialidad.currentIndexChanged.connect(self.ActualizarLabelMedico) # Actualizar el label del médico seleccionado
 
         self.lEspecialidad1 = QLabel(self.groupBox1)
         # Ajuste de geometria: X, Y, Ancho, Alto
@@ -101,7 +105,7 @@ class WindowPaciente(QMainWindow):
 
         self.lCIRUJANO = QLabel(self.groupBox1)
         self.lCIRUJANO.setGeometry(168, 88, 160, 34)
-        self.lCIRUJANO.setFont(QFont('Segoe UI Black',))
+        self.lCIRUJANO.setFont(QFont('Segoe UI Black', 16, QFont.Weight.Bold))
         self.lCIRUJANO.setStyleSheet('color: rgb(23, 255, 237);')
         self.lCIRUJANO.setText('------')
 
@@ -120,7 +124,7 @@ class WindowPaciente(QMainWindow):
         #self.tme_HoraCita.setDisplayFormat('h:mm:ss AP')
         # formato de 24 horas
         self.tme_HoraCita.setTime(QTime.currentTime())
-        self.tme_HoraCita.setDisplayFormat('HH:mm')
+        self.tme_HoraCita.setDisplayFormat('HH:mm:ss AP')
         # MAXIMO Y MINIMO DE HORA DE CITA
         self.tme_HoraCita.setMinimumTime(QTime(8, 0))
         self.tme_HoraCita.setMaximumTime(QTime(18, 0))
@@ -140,8 +144,15 @@ class WindowPaciente(QMainWindow):
         pass
 
     def bConfirmarCita_clicked(self, checked):
-        # ToDo insert source code here
-        pass
+        ID_Paciente = self.id_Cita_Paciente
+        ID_Medico = self.id_Doctor
+        Fecha_Hora = f"{self.dte_Nacimiento.date().toString('yyyy-MM-dd')} {self.tme_HoraCita.time().toString('HH:mm:ss')}"
+        success, message = self.db_manager.agendar_cita(ID_Paciente, ID_Medico, Fecha_Hora)
+        if success:
+            QMessageBox.information(self, "Éxito", message)
+            self.LimpiarCampos()
+        else:
+            QMessageBox.critical(self, "Error", message)
 
     def btnCancelarCita_clicked(self, checked):
         # ToDo insert source code here
@@ -150,29 +161,40 @@ class WindowPaciente(QMainWindow):
     def ActualizarLabelMedico(self):
         # use consultoriomedico;
         # SELECT * FROM consultoriomedico.medicos where id_medico = 2;
-        medico_id = self.cmbEspecialidad.currentData() 
-        success, medicos = self.db_manager.obtener_medicos()
-        if success:
-            for medico in medicos:
-                if medico[0] == medico_id:
-                    self.lCIRUJANO.setText(medico[1]) # Especialidad del médico [3]
-                    break
-        else:
-            QMessageBox.critical(self, "Error", medicos)
-            
+        medicoID = self.cmbEspecialidad.currentIndex()
+        success, medico = self.db_manager.obtener_medicos()
+        if not success:
+            QMessageBox.critical(self, "Error", medico)
+            return
+        self.id_Doctor = medico[medicoID][0]
+        # Nombre y apellido del medico
+        self.lCIRUJANO.setText(f"{medico[medicoID][1]} {medico[medicoID][2]}") # Nombre y apellido del medico [1] [2]
+        #self.lCIRUJANO.setText(medico[medicoID][1]) # Nombre del medico [1]
+        #print(medico[medicoID][1])
+        
+        
     def cargar_medicos(self):
-        """Carga los nombres de los médicos en el ComboBox."""
         success, medicos = self.db_manager.obtener_medicos()
         if success:
-            self.cmbEspecialidad.clear()
             for medico in medicos:
-                #nombre_completo = f"{medico[1]} {medico[2]}"  # Nombre y apellido
-                nombre_completo = f"{medico[3]}"  # Nombre y apellido
-                self.cmbEspecialidad.addItem(nombre_completo, medico[0])  # Guardar el ID del médico como dato
-                #self.lCIRUJANO.setText(medico[3])  # Especialidad del médico
-                #self.lCIRUJANO.setText(medico[1])  # Especialidad del médico
+                self.cmbEspecialidad.addItem(medico[3]) # Espesialidad del medico [3]
         else:
             QMessageBox.critical(self, "Error", medicos)
+    
+    def CargarUsuarioDetails(self):
+        success, detalles_usuario = self.db_manager.obtener_detalles_usuario(self.id_paciente)
+        if not success:
+            QMessageBox.critical(self, "Error", detalles_usuario)
+            return
+        self.id_Cita_Paciente = detalles_usuario[4]  # ID del paciente
+        
+        pass
+
+    def LimpiarCampos(self):
+        self.cmbEspecialidad.setCurrentIndex(0)
+        self.dte_Nacimiento.setDate(QDate.currentDate())
+        self.tme_HoraCita.setTime(QTime.currentTime())
+        pass
 
 if __name__ == "__main__":
     app = QApplication([])
