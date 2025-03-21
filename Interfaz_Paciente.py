@@ -30,6 +30,7 @@ class WindowPaciente(QMainWindow):
         
         self.cargar_medicos()  # Cargar los médicos al iniciar la ventana
         self.CargarUsuarioDetails()  # Cargar los detalles del usuario || ID del paciente
+        self.CargarCitasActivas()  # Cargar las citas activas del paciente
 
     def create_widgets(self):
         self.groupBox1 = QGroupBox(self)
@@ -65,7 +66,16 @@ class WindowPaciente(QMainWindow):
         self.TablaCitas = QTableView(self)
         self.TablaCitas.setGeometry(440, 48, 457, 296)
         self.TablaCitas.setFont(QFont('Segoe UI', 9))
+        self.TablaCitas.setStyleSheet('color: rgb(255, 255, 255);')
         self.TablaCitas.setModel(QStandardItemModel())
+        self.TablaCitas.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.TablaCitas.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.TablaCitas.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.TablaCitas.horizontalHeader().setStretchLastSection(True)
+        self.TablaCitas.verticalHeader().setVisible(False)
+        self.TablaCitas.horizontalHeader().setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
+        self.TablaCitas.setStyleSheet('background-color: rgb(59, 7, 56);')
+        #self.TablaCitas.clicked.connect(self.TablaCitas_clicked)
 
         # Boton cerrar sesion
         self.bCerrarSesion = QPushButton(self)
@@ -150,6 +160,7 @@ class WindowPaciente(QMainWindow):
         success, message = self.db_manager.agendar_cita(ID_Paciente, ID_Medico, Fecha_Hora)
         if success:
             QMessageBox.information(self, "Éxito", message)
+            self.CargarCitasActivas() # Actualizar la tabla de citas
             self.LimpiarCampos()
         else:
             QMessageBox.critical(self, "Error", message)
@@ -172,7 +183,6 @@ class WindowPaciente(QMainWindow):
         #self.lCIRUJANO.setText(medico[medicoID][1]) # Nombre del medico [1]
         #print(medico[medicoID][1])
         
-        
     def cargar_medicos(self):
         success, medicos = self.db_manager.obtener_medicos()
         if success:
@@ -194,6 +204,29 @@ class WindowPaciente(QMainWindow):
         self.cmbEspecialidad.setCurrentIndex(0)
         self.dte_Nacimiento.setDate(QDate.currentDate())
         self.tme_HoraCita.setTime(QTime.currentTime())
+        pass
+
+    def CargarCitasActivas(self):
+        success, citas_activas = self.db_manager.cargar_citas_activas(self.id_Cita_Paciente)
+        if not success:
+            QMessageBox.critical(self, "Error", citas_activas)
+            return
+        # Configurar la tabla de citas
+        model = QStandardItemModel()
+        model.setColumnCount(6)
+        model.setHorizontalHeaderLabels(["ID Cita", "Nombre Médico", "Apellido Médico", "Especialidad", "Fecha y Hora", "Estado"])
+        self.TablaCitas.setModel(model)
+        for cita in citas_activas:
+            row = [
+                QStandardItem(str(cita[0])),  # ID Cita
+                QStandardItem(cita[1]),      # Nombre Médico
+                QStandardItem(cita[2]),      # Apellido Médico
+                QStandardItem(cita[3]),      # Especialidad
+                QStandardItem(str(cita[4])),  # Fecha y Hora
+                QStandardItem(cita[5])       # Estado
+            ]
+            model.appendRow(row)
+        self.TablaCitas.resizeColumnsToContents()
         pass
 
 if __name__ == "__main__":
