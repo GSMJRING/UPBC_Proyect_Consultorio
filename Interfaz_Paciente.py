@@ -9,7 +9,7 @@ class WindowPaciente(QMainWindow):
 
     def __init__(self, user_data):
         super().__init__()
-        
+
         # Nuevo modo de conexion a base de datos
         self.db_manager = DatabaseManager()
         self.db_manager.connect()
@@ -18,24 +18,24 @@ class WindowPaciente(QMainWindow):
         self.id_paciente = user_data[0]  # ID del paciente
 
         # Configuración de la ventana
-        self.resize(912, 412) 
+        self.resize(912, 422)
         self.setWindowTitle('Consultorio Medico || Paciente')
         self.setCentralWidget(QWidget(self))
         self.create_widgets()
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
-        self.cargar_medicos()  # Cargar los médicos al iniciar la ventana 
+        self.cargar_medicos()  # Cargar los médicos al iniciar la ventana
 
     def create_widgets(self):
         self.groupBox1 = QGroupBox(self)
-        self.groupBox1.setGeometry(16, 48, 416, 296)
+        self.groupBox1.setGeometry(16, 48, 416, 344)
         self.groupBox1.setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
         self.groupBox1.setTitle('Agendar Cita')
-        self.lEspecialidad = QLabel(self.groupBox1)
-        self.lEspecialidad.setGeometry(24, 48, 160, 24)
-        self.lEspecialidad.setFont(QFont('Segoe UI Black', 16, QFont.Weight.Bold))
-        self.lEspecialidad.setText('Especialidad:')
+        self.lMedico = QLabel(self.groupBox1)
+        self.lMedico.setGeometry(48, 40, 104, 34)
+        self.lMedico.setFont(QFont('Segoe UI Black', 16, QFont.Weight.Bold))
+        self.lMedico.setText('Medico: ')
         self.lFechadecita = QLabel(self.groupBox1)
-        self.lFechadecita.setGeometry(16, 112, 152, 24)
+        self.lFechadecita.setGeometry(16, 168, 152, 24)
         self.lFechadecita.setFont(QFont('Segoe UI', 16, QFont.Weight.Bold))
         self.lFechadecita.setText('Fecha de cita:')
         self.lCITASACTIVAS = QLabel(self)
@@ -43,7 +43,7 @@ class WindowPaciente(QMainWindow):
         self.lCITASACTIVAS.setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
         self.lCITASACTIVAS.setText('CITAS ACTIVAS')
         self.lHoradecita = QLabel(self.groupBox1)
-        self.lHoradecita.setGeometry(16, 160, 152, 34)
+        self.lHoradecita.setGeometry(16, 208, 152, 34)
         self.lHoradecita.setFont(QFont('Segoe UI', 16, QFont.Weight.Bold))
         self.lHoradecita.setText('Hora de cita:')
 
@@ -71,7 +71,7 @@ class WindowPaciente(QMainWindow):
 
         # Boton confirmar cita
         self.bConfirmarCita = QPushButton(self.groupBox1)
-        self.bConfirmarCita.setGeometry(32, 216, 344, 56)
+        self.bConfirmarCita.setGeometry(32, 272, 344, 56)
         self.bConfirmarCita.setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
         self.bConfirmarCita.setStyleSheet('color: rgb(0, 0, 0);')
         self.bConfirmarCita.setStyleSheet('background-color: rgb(0, 255, 0);')
@@ -80,18 +80,23 @@ class WindowPaciente(QMainWindow):
 
         # # Selector de especialidad
         # self.cmbEspecialidad = QComboBox(self.groupBox1)
-        # self.cmbEspecialidad.setGeometry(168, 40, 216, 40)
+        # self.cmbEspecialidad.setGeometry(168, 32, 216, 40)
         # self.cmbEspecialidad.setFont(QFont('Segoe UI', 9))
         # self.cmbEspecialidad.setModel(QStringListModel(['Medico General', 'Ginecologia', 'Pediatra', 'Odontologia', 'Psiquiatra', 'Psicologia', 'Urologo', 'Nefrologo']))
 
         # ComboBox para seleccionar el médico
         self.cmbEspecialidad = QComboBox(self.groupBox1)
-        self.cmbEspecialidad.setGeometry(168, 40, 216, 40)
+        self.cmbEspecialidad.setGeometry(168, 32, 216, 40)
         self.cmbEspecialidad.setFont(QFont('Segoe UI', 9))
         self.cmbEspecialidad.setPlaceholderText("Seleccione un médico")
 
+        self.lCIRUJANO = QLabel(self.groupBox1)
+        self.lCIRUJANO.setGeometry(168, 88, 160, 34)
+        self.lCIRUJANO.setFont(QFont('Segoe UI Black', 16))
+        self.lCIRUJANO.setText('------')
+
         self.dte_Nacimiento = QDateEdit(self)
-        self.dte_Nacimiento.setGeometry(176, 135, 208, 32)
+        self.dte_Nacimiento.setGeometry(176, 220, 208, 32)
         self.dte_Nacimiento.setFont(QFont('Segoe UI', 9))
         self.dte_Nacimiento.setCalendarPopup(True)
         self.dte_Nacimiento.setDate(QDate.currentDate())
@@ -100,7 +105,7 @@ class WindowPaciente(QMainWindow):
 
         # Selector de hora de cita
         self.tme_HoraCita = QTimeEdit(self)
-        self.tme_HoraCita.setGeometry(176, 190, 208, 32)
+        self.tme_HoraCita.setGeometry(176, 260, 208, 32) # (16, 208, 152, 34)
         self.tme_HoraCita.setFont(QFont('Segoe UI', 9))
         #self.tme_HoraCita.setDisplayFormat('h:mm:ss AP')
         # formato de 24 horas
@@ -117,6 +122,13 @@ class WindowPaciente(QMainWindow):
         self.btnCancelarCita.setStyleSheet('background-color: rgb(245, 120, 11);')
         self.btnCancelarCita.setText('Cancelar Cita Seleccionada')
         self.btnCancelarCita.clicked.connect(self.btnCancelarCita_clicked)
+        #self.HoraCita.setGeometry(176, 208, 208, 32)
+        #self.FechaCita.setGeometry(176, 160, 208, 32)
+        self.lEspecialidad1 = QLabel(self.groupBox1)
+        self.lEspecialidad1.setGeometry(8, 96, 160, 24)
+        self.lEspecialidad1.setFont(QFont('Segoe UI Black', 16, QFont.Weight.Bold))
+        self.lEspecialidad1.setText('Especialidad:')
+
         pass
 
     def bCerrarSesion_clicked(self, checked):
@@ -139,6 +151,7 @@ class WindowPaciente(QMainWindow):
             for medico in medicos:
                 nombre_completo = f"{medico[1]} {medico[2]}"  # Nombre y apellido
                 self.cmbEspecialidad.addItem(nombre_completo, medico[0])  # Guardar el ID del médico como dato
+                self.lCIRUJANO.setText(medico[3])  # Especialidad del médico
         else:
             QMessageBox.critical(self, "Error", medicos)
 
