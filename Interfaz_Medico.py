@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
+from mysql.connector.types import ParamsSequenceOrDictType
 from DatabaseManager import DatabaseManager
 from Interfaz_Reagendar import WindowReagendar
 
@@ -273,11 +274,18 @@ class WindowMedico(QMainWindow):
         # Abrir la ventana de reagendar cita
         self.ventana_reagendar = WindowReagendar(self.ID_CitaSeleccionada, self.NombreApellidoPaciente)
         # Conectar la señal de la ventana de reagendar a un método para actualizar la tabla
-        self.ventana_reagendar.cita_reagendada.connect(self.CitasMedicasActivas)
+        self.ventana_reagendar.cita_reagendada.connect(self.SenalRecibida)
         self.ventana_reagendar.show()
         pass
 
-        
+    def SenalRecibida(self):
+        # Actualizar la tabla de citas activas
+        #limpiar la tabla
+        self.db_manager.connect()
+        self.CitasMedicasActivas()
+        self.db_manager.disconnect()
+        print("Señal recibida")
+        pass
 
 if __name__ == "__main__":
     app = QApplication([])
