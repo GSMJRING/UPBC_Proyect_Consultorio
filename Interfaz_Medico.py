@@ -32,7 +32,7 @@ class WindowMedico(QMainWindow):
         self.GralData.setGeometry(16, 16, 640, 208)
         self.GralData.setFont(QFont('Segoe UI', 9))
         self.GpDiagnostico = QGroupBox(self)
-        self.GpDiagnostico.setGeometry(16, 232, 641, 457)
+        self.GpDiagnostico.setGeometry(16, 232, 641, 528)
         self.GpDiagnostico.setFont(QFont('Segoe UI', 9))
         self.GpDiagnostico.setTitle('Diagnostico y Tratamiento')
         self.lblConsulEsp = QLabel(self.GralData)
@@ -55,15 +55,34 @@ class WindowMedico(QMainWindow):
         self.lHistorialClinico.setGeometry(928, 24, 208, 34)
         self.lHistorialClinico.setFont(QFont('Segoe UI', 16, QFont.Weight.Bold))
         self.lHistorialClinico.setText('Historial Clinico')
-
+        self.lDiagnosticodelpaciente = QLabel(self.GpDiagnostico)
+        self.lDiagnosticodelpaciente.setGeometry(16, 48, 240, 24)
+        self.lDiagnosticodelpaciente.setFont(QFont('Consolas', 12, QFont.Weight.Bold))
+        self.lDiagnosticodelpaciente.setText('Diagnostico del paciente')
+        self.lTratamiento = QLabel(self.GpDiagnostico)
+        self.lTratamiento.setGeometry(16, 168, 240, 24)
+        self.lTratamiento.setFont(QFont('Consolas', 12, QFont.Weight.Bold))
+        self.lTratamiento.setText('Tratamiento')
+        self.lObservacionesycomentarios = QLabel(self.GpDiagnostico)
+        self.lObservacionesycomentarios.setGeometry(16, 296, 252, 24)
+        self.lObservacionesycomentarios.setFont(QFont('Consolas', 12, QFont.Weight.Bold))
+        self.lObservacionesycomentarios.setText('Observaciones y comentarios')
         self.lineEdit1 = QLineEdit(self.GralData)
         self.lineEdit1.setGeometry(120, 160, 345, 33)
         self.lineEdit1.setFont(QFont('Segoe UI', 9))
 
         # Tablas de diagnostico y Entrada de texto
         self.PlainDiagnostico = QPlainTextEdit(self.GpDiagnostico)
-        self.PlainDiagnostico.setGeometry(16, 32, 608, 256)
+        self.PlainDiagnostico.setGeometry(16, 72, 608, 80)
         self.PlainDiagnostico.setFont(QFont('Segoe UI', 9))
+
+        self.PlainTratamiento = QPlainTextEdit(self.GpDiagnostico)
+        self.PlainTratamiento.setGeometry(16, 192, 608, 80)
+        self.PlainTratamiento.setFont(QFont('Segoe UI', 9))
+
+        self.PlainObservaciones = QPlainTextEdit(self.GpDiagnostico)
+        self.PlainObservaciones.setGeometry(16, 320, 608, 80)
+        self.PlainObservaciones.setFont(QFont('Segoe UI', 9))
 
         self.TableCitasActivas = QTableView(self.GpCitas)
         self.TableCitasActivas.setGeometry(16, 32, 633, 569)
@@ -73,21 +92,21 @@ class WindowMedico(QMainWindow):
 
         # Botones de accion de la aplicacion
         self.BtnDiagnostico = QToolButton(self.GpDiagnostico)
-        self.BtnDiagnostico.setGeometry(24, 336, 136, 48)
+        self.BtnDiagnostico.setGeometry(16, 456, 136, 48)
         self.BtnDiagnostico.setStyleSheet("background-color: #FF126905; color: white;")
         self.BtnDiagnostico.setFont(QFont('Segoe UI', 9))
         self.BtnDiagnostico.setText('Registrar Diagnostico')
         self.BtnDiagnostico.clicked.connect(self.BtnDiagnostico_clicked)
 
         self.BtnCancelarCita = QToolButton(self.GpDiagnostico)
-        self.BtnCancelarCita.setGeometry(168, 336, 136, 48)
+        self.BtnCancelarCita.setGeometry(168, 456, 136, 48)
         self.BtnCancelarCita.setStyleSheet("background-color: #FF690E10; color: white;")
         self.BtnCancelarCita.setFont(QFont('Segoe UI', 9))
         self.BtnCancelarCita.setText('Cancelar Cita')
         self.BtnCancelarCita.clicked.connect(self.BtnCancelarCita_clicked)
 
         self.BtnReprogramar = QToolButton(self.GpDiagnostico)
-        self.BtnReprogramar.setGeometry(312, 336, 136, 48)
+        self.BtnReprogramar.setGeometry(312, 456, 136, 48)
         self.BtnReprogramar.setStyleSheet("background-color: #FF083869; color: white;")
         self.BtnReprogramar.setFont(QFont('Segoe UI', 9))
         self.BtnReprogramar.setText('Reprogramar Cita')
@@ -101,15 +120,14 @@ class WindowMedico(QMainWindow):
         self.BtnCerrarSesion.clicked.connect(self.BtnCerrarSesion_clicked)
 
         self.BtnBuscarPAciente = QToolButton(self.GralData)
-        self.BtnBuscarPAciente.setGeometry(480, 160, 120, 32)
-        # Boton color Azul
+        self.BtnBuscarPAciente.setGeometry(480, 160, 120, 32) # Boton color Azul
         self.BtnBuscarPAciente.setStyleSheet("background-color: #007bff; color: white;")
         self.BtnBuscarPAciente.setFont(QFont('Segoe UI', 9, QFont.Weight.Bold))
         self.BtnBuscarPAciente.setText('Buscar Paciente')
         self.BtnBuscarPAciente.clicked.connect(self.BtnBuscarPAciente_clicked)
 
         self.BtnDetallesDiag = QToolButton(self.GpDiagnostico)
-        self.BtnDetallesDiag.setGeometry(456, 336, 160, 48)
+        self.BtnDetallesDiag.setGeometry(456, 456, 160, 48)
         self.BtnDetallesDiag.setStyleSheet("background-color: #FF17695E; color: white;")
         self.BtnDetallesDiag.setFont(QFont('Segoe UI', 9))
         self.BtnDetallesDiag.setText('Detalles del Diagnostico')
@@ -124,12 +142,14 @@ class WindowMedico(QMainWindow):
         self.LblMedicoEsp.setGeometry(144, 64, 304, 29)
         self.LblMedicoEsp.setFont(QFont('Segoe UI', 14, QFont.Weight.Bold))
         self.LblMedicoEsp.setText('--------------------') # Nombre del medico
+        
+        
         pass
 
     def BtnCerrarSesion_clicked(self, checked):
         self.close()
         self.mostrar_ventana_login() # Mostrar la ventana de inicio de sesión
-    
+
     def BtnDiagnostico_clicked(self, checked):
         # ToDo insert source code here
         pass
@@ -145,7 +165,7 @@ class WindowMedico(QMainWindow):
     def BtnBuscarPAciente_clicked(self, checked):
         # ToDo insert source code here
         pass
-    
+
     def BtnDetallesDiag_clicked(self, checked):
         # ToDo insert source code here
         pass
