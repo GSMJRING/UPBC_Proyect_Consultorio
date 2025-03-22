@@ -174,5 +174,18 @@ class DatabaseManager:
             return True, "Cita cancelada exitosamente."
         except Exception as e:
             return False, f"No se pudo cancelar la cita: {e}"
+    
+    def cargar_citas_medico(self, id_medico):
+        """Carga las citas del médico en la tabla."""
+        try:
+            cursor = self.connection.cursor()
+            cursor.callproc("ConsultarCitasMedico", (id_medico,))
+            resultados = []
+            for result in cursor.stored_results():
+                resultados = result.fetchall()
+            cursor.close()
+            return True, resultados
+        except Error as e:
+            return False, f"No se pudieron cargar las citas: {e}"
         
-      
+    

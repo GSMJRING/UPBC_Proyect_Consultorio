@@ -21,7 +21,9 @@ class WindowMedico(QMainWindow):
         self.setCentralWidget(QWidget(self))
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
         self.create_widgets()
+
         self.LabelMedico() # Mostrar el nombre del medico en la ventana
+        self.CitasMedicasActivas()
 
     def create_widgets(self):
         self.GpCitas = QGroupBox(self)
@@ -38,6 +40,8 @@ class WindowMedico(QMainWindow):
         self.lblConsulEsp = QLabel(self.GralData)
         self.lblConsulEsp.setGeometry(112, 8, 392, 24)
         self.lblConsulEsp.setFont(QFont('Segoe UI', 16, QFont.Weight.Bold))
+        # LEtras doradas
+        self.lblConsulEsp.setStyleSheet("color: #FFD700;")
         self.lblConsulEsp.setText('Consultorio Medico Especializado')
         self.lMedico = QLabel(self.GralData)
         self.lMedico.setGeometry(48, 64, 88, 24)
@@ -187,6 +191,62 @@ class WindowMedico(QMainWindow):
                 self.LblEspecialidadDoc.setText(medico[3])
                 break
         pass
+
+    def CitasMedicasActivas(self):
+        IDMEDICO = self.id_usuario
+        success, data = self.db_manager.cargar_citas_medico(IDMEDICO)
+        if not success:
+            QMessageBox.warning(self, "Error", data)
+            return
+        model = QStandardItemModel()
+        model.setHorizontalHeaderLabels([
+            "ID Cita", "Nombre Paciente", "Apellido Paciente", 
+            "Fecha y Hora", "Estado"
+        ])
+        for cita in data:
+            row = [
+                QStandardItem(str(cita[0])),  # ID Cita
+                QStandardItem(cita[1]),      # Nombre Paciente
+                QStandardItem(cita[2]),      # Apellido Paciente
+                QStandardItem(str(cita[3])),  # Fecha y Hora
+                QStandardItem(cita[4])       # Estado
+            ]
+            model.appendRow(row)
+        self.TableCitasActivas.setModel(model)
+        # Ajustar el tamaño de las columnas setGeometry(16, 32, 633, 569)
+        self.TableCitasActivas.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
+        self.TableCitasActivas.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.TableCitasActivas.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.TableCitasActivas.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+        self.TableCitasActivas.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)
+        self.TableCitasActivas.setColumnWidth(0, 80)
+        self.TableCitasActivas.setColumnWidth(1, 150)
+        self.TableCitasActivas.setColumnWidth(2, 150)
+        self.TableCitasActivas.setColumnWidth(3, 150)
+        self.TableCitasActivas.setColumnWidth(4, 150)
+        # Si el estado de la cita es "Cancelada" o "Atendida", cambiar el color de la fila
+        for i in range(model.rowCount()):
+            if model.item(i, 4).text() == "cancelada":
+                model.item(i, 0).setBackground(QColor(255, 0, 0, 50))  # Rojo
+                model.item(i, 1).setBackground(QColor(255, 0, 0, 50))
+                model.item(i, 2).setBackground(QColor(255, 0, 0, 50))
+                model.item(i, 3).setBackground(QColor(255, 0, 0, 50))
+                model.item(i, 4).setBackground(QColor(255, 0, 0, 50))
+            elif model.item(i, 4).text() == "atendida":
+                model.item(i, 0).setBackground(QColor(0, 255, 0, 50))
+                model.item(i, 1).setBackground(QColor(0, 255, 0, 50))
+                model.item(i, 2).setBackground(QColor(0, 255, 0, 50))
+                model.item(i, 3).setBackground(QColor(0, 255, 0, 50))
+                model.item(i, 4).setBackground(QColor(0, 255, 0, 50))
+            elif model.item(i, 4).text() == "programada":
+                model.item(i, 0).setBackground(QColor(255, 255, 0, 50))
+                model.item(i, 1).setBackground(QColor(255, 255, 0, 50))
+                model.item(i, 2).setBackground(QColor(255, 255, 0, 50))
+                model.item(i, 3).setBackground(QColor(255, 255, 0, 50))
+                model.item(i, 4).setBackground(QColor(255, 255, 0, 50))
+        
+        pass
+
 
 if __name__ == "__main__":
     app = QApplication([])
