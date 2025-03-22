@@ -24,6 +24,7 @@ class WindowReagendar(QMainWindow):
         self.create_widgets()
 
     def create_widgets(self):
+        # Fecha y hora 
         self.NewDate = QDateEdit(self)
         self.NewDate.setGeometry(40, 112, 152, 32)
         self.NewDate.setFont(QFont('Segoe UI', 9))
@@ -32,6 +33,7 @@ class WindowReagendar(QMainWindow):
         self.NewTime.setGeometry(40, 192, 152, 32)
         self.NewTime.setFont(QFont('Segoe UI', 9))
         self.NewTime.setDisplayFormat('h:nn:ss AMPM')
+
         self.lSeleccionarnuevafecha = QLabel(self)
         self.lSeleccionarnuevafecha.setGeometry(48, 80, 132, 24)
         self.lSeleccionarnuevafecha.setFont(QFont('Segoe UI', 9))
