@@ -75,6 +75,8 @@ class WindowMedico(QMainWindow):
         self.lObservacionesycomentarios.setGeometry(16, 296, 252, 24)
         self.lObservacionesycomentarios.setFont(QFont('Consolas', 12, QFont.Weight.Bold))
         self.lObservacionesycomentarios.setText('Observaciones y comentarios')
+        
+        # Lineas de texto para el paciente
         self.lineEdit1 = QLineEdit(self.GralData)
         self.lineEdit1.setGeometry(120, 160, 345, 33)
         self.lineEdit1.setFont(QFont('Segoe UI', 9))
@@ -97,6 +99,7 @@ class WindowMedico(QMainWindow):
         self.TableCitasActivas.setFont(QFont('Segoe UI', 9))
         self.TableCitasActivas.setModel(QStandardItemModel())
         self.TableCitasActivas.setAlternatingRowColors(True)
+        #self.TableCitasActivas.selectionModel().selectedIndexesChanged.connect(self.on_selection_changed)
 
         # Botones de accion de la aplicacion
         self.BtnDiagnostico = QToolButton(self.GpDiagnostico)
@@ -141,6 +144,13 @@ class WindowMedico(QMainWindow):
         self.BtnDetallesDiag.setText('Detalles del Diagnostico')
         self.BtnDetallesDiag.clicked.connect(self.BtnDetallesDiag_clicked)
 
+        self.btnClearSel = QToolButton(self.GralData)
+        self.btnClearSel.setGeometry(480, 112, 120, 32)
+        self.btnClearSel.setStyleSheet("background-color: #FF460769; color: white;")
+        self.btnClearSel.setFont(QFont('Segoe UI', 9))
+        self.btnClearSel.setText('Clear Selection')
+        self.btnClearSel.clicked.connect(self.btnClearSel_clicked)
+
         # Labels de cambio segun el inicio de sesion
         self.LblEspecialidadDoc = QLabel(self.GralData)
         self.LblEspecialidadDoc.setGeometry(144, 104, 304, 29)
@@ -150,7 +160,6 @@ class WindowMedico(QMainWindow):
         self.LblMedicoEsp.setGeometry(144, 64, 304, 29)
         self.LblMedicoEsp.setFont(QFont('Segoe UI', 14, QFont.Weight.Bold))
         self.LblMedicoEsp.setText('--------------------') # Nombre del medico
-        
         
         pass
 
@@ -186,7 +195,13 @@ class WindowMedico(QMainWindow):
     def BtnDetallesDiag_clicked(self, checked):
         # ToDo insert source code here
         pass
+    
+    def btnClearSel_clicked(self, checked):
+        # ToDo insert source code here
+        pass
 
+
+    # Funciones de la ventana de inicio de sesión
     def mostrar_ventana_login(self):
         """Muestra la ventana de inicio de sesión."""
         from Main import LogInWindow  # Importar la ventana de inicio de sesión
@@ -266,6 +281,7 @@ class WindowMedico(QMainWindow):
         if index.isValid():
             self.ID_CitaSeleccionada = self.TableCitasActivas.model().index(index.row(), 0).data()
             self.NombreApellidoPaciente = self.TableCitasActivas.model().index(index.row(), 1).data() + " " + self.TableCitasActivas.model().index(index.row(), 2).data()
+            self.lineEdit1.setText(self.NombreApellidoPaciente)
         else:
             self.ID_CitaSeleccionada = 0
             self.NombreApellidoPaciente = None
@@ -286,6 +302,7 @@ class WindowMedico(QMainWindow):
         self.db_manager.disconnect()
         print("Señal recibida")
         pass
+
 
 if __name__ == "__main__":
     app = QApplication([])
