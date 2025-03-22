@@ -204,6 +204,7 @@ class WindowMedico(QMainWindow):
                 QMessageBox.information(self, "Éxito", "Diagnóstico registrado y cita completada con éxito.")
                 # Actualizar la tabla de citas activas
                 self.CitasMedicasActivas()
+                self.LimpiarCampos()
             else:
                 QMessageBox.warning(self, "Error", f"No se pudo registrar el diagnóstico: {message}")
         except Exception as e:
@@ -300,7 +301,7 @@ class WindowMedico(QMainWindow):
         pass
     
     def btnClearSel_clicked(self, checked):
-        # ToDo insert source code here
+        self.LimpiarCampos()
         pass
 
 
@@ -418,6 +419,15 @@ class WindowMedico(QMainWindow):
             self.lineEdit1.setText(f"{nombre_paciente} {apellido_paciente}")
         else:
             self.lineEdit1.clear()
+        pass
+
+    def LimpiarCampos(self):
+        self.lineEdit1.clear()
+        self.PlainDiagnostico.clear()
+        self.PlainTratamiento.clear()
+        self.PlainObservaciones.clear()
+        self.TableCitasActivas.clearSelection()
+        self.lineEdit1.setFocus()
         pass
 
 if __name__ == "__main__":
