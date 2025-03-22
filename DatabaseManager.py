@@ -150,6 +150,16 @@ class DatabaseManager:
             return True, "Cita agendada exitosamente."
         except Exception as e:
             return False, f"Error al agendar la cita: {e}"
+    
+    def ReagendarCita(self, cita_id, nueva_fecha_hora):
+        try:
+            cursor = self.connection.cursor()
+            cursor.callproc("ReagendarCita", (cita_id, nueva_fecha_hora))
+            self.connection.commit()
+            cursor.close()
+            return True, "Cita reagendada exitosamente."
+        except Exception as e:
+            return False, f"Error al reagendar la cita: {e}"
         
     def cargar_citas_activas(self, id_paciente):
             """Obtiene las citas activas del paciente y las muestra en la tabla."""

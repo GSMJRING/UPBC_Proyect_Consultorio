@@ -272,6 +272,8 @@ class WindowMedico(QMainWindow):
     def AbrirReagendar(self):
         # Abrir la ventana de reagendar cita
         self.ventana_reagendar = WindowReagendar(self.ID_CitaSeleccionada, self.NombreApellidoPaciente)
+        # Conectar la señal de la ventana de reagendar a un método para actualizar la tabla
+        self.ventana_reagendar.cita_reagendada.connect(self.CitasMedicasActivas)
         self.ventana_reagendar.show()
         pass
 

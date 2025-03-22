@@ -1,10 +1,14 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
+from PyQt6.QtCore import pyqtSignal  # Importar pyqtSignal para crear señales
 from mysql.connector import connect
-from DatabaseManager import DatabaseManager
+from DatabaseManager import DatabaseManager 
 
 class WindowReagendar(QMainWindow):
+
+# Definir una señal que se emitirá cuando la cita se reagende
+    cita_reagendada = pyqtSignal()
 
     def __init__(self, ID_Cita, ID_Nombre):
         super().__init__()
@@ -13,7 +17,7 @@ class WindowReagendar(QMainWindow):
         self.db_manager = DatabaseManager()
         self.db_manager.connect()
 
-        self.ID_Cita = ID_Cita
+        self.ID_Cita = ID_Cita 
         self.ID_Nombre = ID_Nombre
 
         #self.resize(249, 327)
@@ -77,7 +81,26 @@ class WindowReagendar(QMainWindow):
         pass
 
     def bConfirmar_clicked(self, checked):
-        # ToDo insert source code here
+        """Reagenda la cita con la nueva fecha y hora seleccionada."""
+        # Preguntar si esta seguro de reagendar la cita
+        if QMessageBox.question(self, 'Reagendar Cita', '¿Está seguro de reagendar la cita?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) == QMessageBox.StandardButton.Yes:
+            # Obtener la nueva fecha y hora seleccionada
+            nueva_fecha_hora = f"{self.NewDate.date().toString('yyyy-MM-dd')} {self.NewTime.time().toString('HH:mm:ss')}"
+            success, message = self.db_manager.ReagendarCita(self.ID_Cita, nueva_fecha_hora)
+            if success:
+                QMessageBox.information(self, 'Cita Reagendada', 'La cita ha sido reagendada con éxito.')
+                # Emitir la señal para notificar que la cita se ha reagendado
+                self.cita_reagendada.emit() 
+                self.close()
+                self.db_manager.disconnect()
+            else:
+                QMessageBox.warning(self, 'Error', f'Error al reagendar la cita: {message}')
+                self.db_manager.disconnect()
+        else:
+            QMessageBox.information(self, 'Reagendar Cita', 'Accion cancelada por el usuario.')
+            self.close()
+            self.db_manager.disconnect()
+            
         pass
 
     def bCancelar_clicked(self, checked):
