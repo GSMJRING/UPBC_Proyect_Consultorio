@@ -99,7 +99,9 @@ class WindowMedico(QMainWindow):
         self.TableCitasActivas.setFont(QFont('Segoe UI', 9))
         self.TableCitasActivas.setModel(QStandardItemModel())
         self.TableCitasActivas.setAlternatingRowColors(True)
-        #self.TableCitasActivas.selectionModel().selectedIndexesChanged.connect(self.on_selection_changed)
+        self.TableCitasActivas.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.TableCitasActivas.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+       
 
         # Botones de accion de la aplicacion
         self.BtnDiagnostico = QToolButton(self.GpDiagnostico)
@@ -189,8 +191,73 @@ class WindowMedico(QMainWindow):
         pass
 
     def BtnBuscarPAciente_clicked(self, checked):
-        # ToDo insert source code here
-        pass
+        # Filtrar la tabla por nombre o apellido del paciente
+        texto_busqueda = self.lineEdit1.text().strip()
+
+        if texto_busqueda == "":  # Si el campo esta vacio, devolver la tabla a su estado original
+            self.CitasMedicasActivas()
+        else:
+            IDMEDICO = self.id_usuario
+            success, data = self.db_manager.cargar_citas_medico(IDMEDICO)
+            if not success:
+                QMessageBox.warning(self, "Error", data)
+                return
+            
+            model = QStandardItemModel()
+            model.setHorizontalHeaderLabels([
+                "ID Cita", "Nombre Paciente", "Apellido Paciente", 
+                "Fecha y Hora", "Estado"
+            ])
+
+            # Filtrar las citas que contengan el texto de búsqueda en el nombre o apellido del paciente
+            for cita in data:
+                nombre_paciente = cita[1].lower()  # Convertir a minúsculas para hacer la búsqueda insensible a mayúsculas
+                apellido_paciente = cita[2].lower()  # Convertir a minúsculas para hacer la búsqueda insensible a mayúsculas
+                if texto_busqueda.lower() in nombre_paciente or texto_busqueda.lower() in apellido_paciente:
+                    row = [
+                        QStandardItem(str(cita[0])),  # ID Cita
+                        QStandardItem(cita[1]),      # Nombre Paciente
+                        QStandardItem(cita[2]),      # Apellido Paciente
+                        QStandardItem(str(cita[3])),  # Fecha y Hora
+                        QStandardItem(cita[4])       # Estado
+                    ]
+                    model.appendRow(row)
+
+            # Establecer el modelo de la tabla con los datos filtrados
+            self.TableCitasActivas.setModel(model)
+
+            # Ajustar el tamaño de las columnas
+            self.TableCitasActivas.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
+            self.TableCitasActivas.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+            self.TableCitasActivas.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+            self.TableCitasActivas.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+            self.TableCitasActivas.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)
+            self.TableCitasActivas.setColumnWidth(0, 80)
+            self.TableCitasActivas.setColumnWidth(1, 150)
+            self.TableCitasActivas.setColumnWidth(2, 150)
+            self.TableCitasActivas.setColumnWidth(3, 150)
+            self.TableCitasActivas.setColumnWidth(4, 150)
+
+            # Establecer colores para las filas según el estado de la cita
+            for i in range(model.rowCount()):
+                if model.item(i, 4).text() == "cancelada":
+                    model.item(i, 0).setBackground(QColor(255, 0, 0, 50))  # Rojo
+                    model.item(i, 1).setBackground(QColor(255, 0, 0, 50))
+                    model.item(i, 2).setBackground(QColor(255, 0, 0, 50))
+                    model.item(i, 3).setBackground(QColor(255, 0, 0, 50))
+                    model.item(i, 4).setBackground(QColor(255, 0, 0, 50))
+                elif model.item(i, 4).text() == "atendida":
+                    model.item(i, 0).setBackground(QColor(0, 255, 0, 50))  # Verde
+                    model.item(i, 1).setBackground(QColor(0, 255, 0, 50))
+                    model.item(i, 2).setBackground(QColor(0, 255, 0, 50))
+                    model.item(i, 3).setBackground(QColor(0, 255, 0, 50))
+                    model.item(i, 4).setBackground(QColor(0, 255, 0, 50))
+                elif model.item(i, 4).text() == "programada":
+                    model.item(i, 0).setBackground(QColor(255, 255, 0, 50))  # Amarillo
+                    model.item(i, 1).setBackground(QColor(255, 255, 0, 50))
+                    model.item(i, 2).setBackground(QColor(255, 255, 0, 50))
+                    model.item(i, 3).setBackground(QColor(255, 255, 0, 50))
+                    model.item(i, 4).setBackground(QColor(255, 255, 0, 50))
 
     def BtnDetallesDiag_clicked(self, checked):
         # ToDo insert source code here
