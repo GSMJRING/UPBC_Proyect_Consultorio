@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from DatabaseManager import DatabaseManager
+from Interfaz_Reagendar import WindowReagendar
 
 class WindowMedico(QMainWindow):
 
@@ -14,6 +15,8 @@ class WindowMedico(QMainWindow):
 
         self.user_data = user_data
         self.id_usuario = user_data[5] # ID del doctor (usuario)
+        self.ID_CitaSeleccionada = 0
+        self.NombreApellidoPaciente = None
 
         #self.resize(1388, 775)
         self.setFixedSize(1388, 775)
@@ -163,7 +166,16 @@ class WindowMedico(QMainWindow):
         pass
 
     def BtnReprogramar_clicked(self, checked):
-        # ToDo insert source code here
+        selectIndex = self.TableCitasActivas.selectedIndexes()
+        if len(selectIndex) == 0:
+            QMessageBox.warning(self, "Error", "Seleccione una cita para reprogramar.")
+            return
+        self.ObtenerCitaNombre()
+        if self.ID_CitaSeleccionada == 0:
+            QMessageBox.warning(self, "Error", "Seleccione una cita para reprogramar.")
+            return
+        self.AbrirReagendar()
+        
         pass
 
     def BtnBuscarPAciente_clicked(self, checked):
@@ -247,6 +259,23 @@ class WindowMedico(QMainWindow):
         
         pass
 
+    def ObtenerCitaNombre(self):
+        # Obtener el nombre del paciente de la cita seleccionada en la tabla
+        index = self.TableCitasActivas.currentIndex()
+        if index.isValid():
+            self.ID_CitaSeleccionada = self.TableCitasActivas.model().index(index.row(), 0).data()
+            self.NombreApellidoPaciente = self.TableCitasActivas.model().index(index.row(), 1).data() + " " + self.TableCitasActivas.model().index(index.row(), 2).data()
+        else:
+            self.ID_CitaSeleccionada = 0
+            self.NombreApellidoPaciente = None
+
+    def AbrirReagendar(self):
+        # Abrir la ventana de reagendar cita
+        self.ventana_reagendar = WindowReagendar(self.ID_CitaSeleccionada, self.NombreApellidoPaciente)
+        self.ventana_reagendar.show()
+        pass
+
+        
 
 if __name__ == "__main__":
     app = QApplication([])
