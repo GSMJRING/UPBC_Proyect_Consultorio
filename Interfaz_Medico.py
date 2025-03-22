@@ -99,9 +99,9 @@ class WindowMedico(QMainWindow):
         self.TableCitasActivas.setGeometry(16, 32, 633, 569)
         self.TableCitasActivas.setFont(QFont('Segoe UI', 9))
         self.TableCitasActivas.setModel(QStandardItemModel())
-        self.TableCitasActivas.setSelectionMode(QAbstractItemView.SelectionMode.ContiguousSelection)
-        #self.TableCitasActivas.setSelecstionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.TableCitasActivas.selectionModel().selectionChanged.connect(self.seleccionar_paciente)
+        self.TableCitasActivas.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.TableCitasActivas.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        #self.TableCitasActivas.selectionModel().selectionChanged.connect(self.seleccionar_paciente)
         self.TableCitasActivas.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.TableCitasActivas.setSortingEnabled(True)
         self.TableCitasActivas.setAlternatingRowColors(True)
@@ -173,8 +173,41 @@ class WindowMedico(QMainWindow):
         self.mostrar_ventana_login() # Mostrar la ventana de inicio de sesión
 
     def BtnDiagnostico_clicked(self, checked):
-        # ToDo insert source code here
-        pass
+        # Obtener el ID de la cita seleccionada
+        selectIndex = self.TableCitasActivas.selectedIndexes()
+        if len(selectIndex) == 0:
+            QMessageBox.warning(self, "Error", "Seleccione una cita para registrar el diagnóstico.")
+            return
+
+        # Obtener el ID de la cita seleccionada
+        self.ObtenerCitaNombre()
+        if self.ID_CitaSeleccionada == 0:
+            QMessageBox.warning(self, "Error", "Seleccione una cita válida.")
+            return
+
+        # Obtener el diagnóstico, tratamiento y observaciones de los campos de texto
+        diagnostico = self.PlainDiagnostico.toPlainText()
+        tratamiento = self.PlainTratamiento.toPlainText()
+        observaciones = self.PlainObservaciones.toPlainText()
+
+        # Validar que se haya ingresado un diagnóstico
+        if not diagnostico.strip():
+            QMessageBox.warning(self, "Error", "El campo de diagnóstico no puede estar vacío.")
+            return
+
+        # Llamar al stored procedure para guardar el diagnóstico y completar la cita
+        try:
+            success, message = self.db_manager.guardar_diagnostico_y_completar_cita(
+                self.ID_CitaSeleccionada, diagnostico, tratamiento, observaciones
+            )
+            if success:
+                QMessageBox.information(self, "Éxito", "Diagnóstico registrado y cita completada con éxito.")
+                # Actualizar la tabla de citas activas
+                self.CitasMedicasActivas()
+            else:
+                QMessageBox.warning(self, "Error", f"No se pudo registrar el diagnóstico: {message}")
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"Error inesperado: {str(e)}")
 
     def BtnCancelarCita_clicked(self, checked):
         # ToDo insert source code here
@@ -249,7 +282,7 @@ class WindowMedico(QMainWindow):
                     model.item(i, 2).setBackground(QColor(255, 0, 0, 50))
                     model.item(i, 3).setBackground(QColor(255, 0, 0, 50))
                     model.item(i, 4).setBackground(QColor(255, 0, 0, 50))
-                elif model.item(i, 4).text() == "atendida":
+                elif model.item(i, 4).text() == "completada":
                     model.item(i, 0).setBackground(QColor(0, 255, 0, 50))  # Verde
                     model.item(i, 1).setBackground(QColor(0, 255, 0, 50))
                     model.item(i, 2).setBackground(QColor(0, 255, 0, 50))
@@ -330,7 +363,7 @@ class WindowMedico(QMainWindow):
                 model.item(i, 2).setBackground(QColor(255, 0, 0, 50))
                 model.item(i, 3).setBackground(QColor(255, 0, 0, 50))
                 model.item(i, 4).setBackground(QColor(255, 0, 0, 50))
-            elif model.item(i, 4).text() == "atendida":
+            elif model.item(i, 4).text() == "completada":
                 model.item(i, 0).setBackground(QColor(0, 255, 0, 50))
                 model.item(i, 1).setBackground(QColor(0, 255, 0, 50))
                 model.item(i, 2).setBackground(QColor(0, 255, 0, 50))

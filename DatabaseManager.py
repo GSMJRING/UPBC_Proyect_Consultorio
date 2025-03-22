@@ -197,5 +197,14 @@ class DatabaseManager:
             return True, resultados
         except Error as e:
             return False, f"No se pudieron cargar las citas: {e}"
-        
     
+    def guardar_diagnostico_y_completar_cita(self, cita_id, diagnostico, tratamiento, observaciones):
+        """Llama al stored procedure para guardar el diagnóstico y completar la cita."""
+        try:
+            cursor = self.connection.cursor()
+            cursor.callproc("GuardarDiagnosticoYCompletarCita",(cita_id, diagnostico, tratamiento, observaciones))
+            self.connection.commit()
+            cursor.close()
+            return True, "Diagnóstico guardado y cita completada con éxito."
+        except Exception as e:
+            return False, f"Error al guardar el diagnóstico: {e}"
