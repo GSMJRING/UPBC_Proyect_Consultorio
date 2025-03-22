@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
+
 from mysql.connector.types import ParamsSequenceOrDictType
 from DatabaseManager import DatabaseManager
 from Interfaz_Reagendar import WindowReagendar
@@ -98,11 +99,14 @@ class WindowMedico(QMainWindow):
         self.TableCitasActivas.setGeometry(16, 32, 633, 569)
         self.TableCitasActivas.setFont(QFont('Segoe UI', 9))
         self.TableCitasActivas.setModel(QStandardItemModel())
-        self.TableCitasActivas.setAlternatingRowColors(True)
-        self.TableCitasActivas.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.TableCitasActivas.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-       
-
+        self.TableCitasActivas.setSelecstionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.SelectedTableRow = self.TableCitasActivas.selectionModel()
+        #self.TableCitasActivas.selectionModel().selectionChanged.connect(self.seleccionar_paciente)
+        self.TableCitasActivas.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.TableCitasActivas.setSortingEnabled(True)
+        self.TableCitasActivas.setAlternatingRowColors(True)
+        
         # Botones de accion de la aplicacion
         self.BtnDiagnostico = QToolButton(self.GpDiagnostico)
         self.BtnDiagnostico.setGeometry(16, 456, 136, 48)
@@ -370,6 +374,18 @@ class WindowMedico(QMainWindow):
         print("Señal recibida")
         pass
 
+    def seleccionar_paciente(self, selected, deselected):
+        """Obtiene el nombre del paciente de la fila seleccionada y lo muestra en lineEdit1."""
+        indexes = self.TableCitasActivas.selectionModel().selectedIndexes()
+        if indexes:
+            row = indexes[0].row()
+            model = self.TableCitasActivas.model()
+            nombre_paciente = model.item(row, 1).text()  # Columna 1: Nombre del paciente
+            apellido_paciente = model.item(row, 2).text()  # Columna 2: Apellido del paciente
+            self.lineEdit1.setText(f"{nombre_paciente} {apellido_paciente}")
+        else:
+            self.lineEdit1.clear()
+        pass
 
 if __name__ == "__main__":
     app = QApplication([])
