@@ -99,10 +99,9 @@ class WindowMedico(QMainWindow):
         self.TableCitasActivas.setGeometry(16, 32, 633, 569)
         self.TableCitasActivas.setFont(QFont('Segoe UI', 9))
         self.TableCitasActivas.setModel(QStandardItemModel())
-        self.TableCitasActivas.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        self.TableCitasActivas.setSelecstionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.SelectedTableRow = self.TableCitasActivas.selectionModel()
-        #self.TableCitasActivas.selectionModel().selectionChanged.connect(self.seleccionar_paciente)
+        self.TableCitasActivas.setSelectionMode(QAbstractItemView.SelectionMode.ContiguousSelection)
+        #self.TableCitasActivas.setSelecstionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.TableCitasActivas.selectionModel().selectionChanged.connect(self.seleccionar_paciente)
         self.TableCitasActivas.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.TableCitasActivas.setSortingEnabled(True)
         self.TableCitasActivas.setAlternatingRowColors(True)
@@ -376,7 +375,8 @@ class WindowMedico(QMainWindow):
 
     def seleccionar_paciente(self, selected, deselected):
         """Obtiene el nombre del paciente de la fila seleccionada y lo muestra en lineEdit1."""
-        indexes = self.TableCitasActivas.selectionModel().selectedIndexes()
+        print("Seleccion realziada")
+        indexes = self.TableCitasActivas.currentIndex()
         if indexes:
             row = indexes[0].row()
             model = self.TableCitasActivas.model()
