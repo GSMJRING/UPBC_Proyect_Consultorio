@@ -118,7 +118,7 @@ class Window(QMainWindow):
 
     def BtnCerrarSesion_clicked(self, checked):
         self.close()
-        self.mostrar_ventana_login
+        self.mostrar_ventana_login() # Mostrar la ventana de inicio de sesión
 
     def BtnBuscarPAciente_clicked(self, checked):
         # ToDo insert source code here
