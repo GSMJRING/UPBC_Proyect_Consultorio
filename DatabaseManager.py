@@ -163,4 +163,50 @@ class DatabaseManager:
                 return True, resultados
             except Error as e:
                 return False, f"No se pudieron cargar las citas activas: {e}"
-            
+ 
+    def cancelar_cita(self, cita_id):
+        """Cancela la cita seleccionada por el paciente."""
+        try:
+            cursor = self.connection.cursor()
+            cursor.callproc("CancelarCita", (cita_id,))
+            self.connection.commit()
+            cursor.close()
+            return True, "Cita cancelada exitosamente."
+        except Exception as e:
+            return False, f"No se pudo cancelar la cita: {e}"
+        
+    # def cancelar_cita(self):
+    #     """Cancela la cita seleccionada por el paciente."""
+    #     # Obtener la cita seleccionada en la tabla
+    #     selected_index = self.tabla_citas.currentIndex()
+    #     if not selected_index.isValid():
+    #         QMessageBox.warning(self, "Advertencia", "Seleccione una cita para cancelar.")
+    #         return
+
+    #     # Obtener el ID de la cita seleccionada
+    #     cita_id = self.tabla_citas.model().index(selected_index.row(), 0).data()
+
+    #     # Preguntar al usuario si desea cancelar la cita
+    #     confirmacion = QMessageBox.question(
+    #         self, 
+    #         "Cancelar Cita", 
+    #         "¿Está seguro de que desea cancelar esta cita?", 
+    #         QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+    #     )
+
+    #     if confirmacion == QMessageBox.StandardButton.Yes:
+    #         try:
+    #             # Llamar al stored procedure para cancelar la cita
+    #             cursor = self.db_manager.connection.cursor()
+    #             cursor.callproc("CancelarCita", (cita_id,))
+    #             self.db_manager.connection.commit()
+    #             cursor.close()
+
+    #             # Mostrar mensaje de éxito
+    #             QMessageBox.information(self, "Éxito", "La cita ha sido cancelada.")
+
+    #             # Recargar las citas activas
+    #             self.cargar_citas_activas()
+
+    #         except Exception as e:
+    #             QMessageBox.critical(self, "Error", f"No se pudo cancelar la cita: {e}")       

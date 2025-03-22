@@ -146,7 +146,7 @@ class WindowPaciente(QMainWindow):
         self.btnCancelarCita.setFont(QFont('Segoe UI', 9))
         self.btnCancelarCita.setStyleSheet('background-color: rgb(245, 120, 11);')
         self.btnCancelarCita.setText('Cancelar Cita Seleccionada')
-        self.btnCancelarCita.clicked.connect(self.btnCancelarCita_clicked)
+        self.btnCancelarCita.clicked.connect(self.CancelarCitaSeleccionada)
 
         pass
 
@@ -244,6 +244,27 @@ class WindowPaciente(QMainWindow):
             ]
             model.appendRow(row)
         self.TablaCitas.resizeColumnsToContents()
+        pass
+
+    def CancelarCitaSeleccionada(self):
+        selected_index = self.TablaCitas.currentIndex()
+        if not selected_index.isValid():
+            QMessageBox.warning(self, "Advertencia", "Seleccione una cita para cancelar.")
+            return
+        cita_id = self.TablaCitas.model().index(selected_index.row(), 0).data()
+        confirmacion = QMessageBox.question(
+            self, 
+            "Cancelar Cita", 
+            "¿Está seguro de que desea cancelar esta cita?", 
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+        if confirmacion == QMessageBox.StandardButton.Yes:
+            success, message = self.db_manager.cancelar_cita(cita_id)
+            if success:
+                QMessageBox.information(self, "Éxito", message)
+                self.CargarCitasActivas()
+            else:
+                QMessageBox.critical(self, "Error", message)
         pass
 
 if __name__ == "__main__":
