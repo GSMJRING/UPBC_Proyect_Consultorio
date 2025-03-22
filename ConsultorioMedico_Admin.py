@@ -197,6 +197,7 @@ class WindowAdmin(QMainWindow):
     def bClearSelection_clicked(self, checked):
         # Limpiar campos
         self.LimpiarCampos
+        print('Boton presionado')
 
     def update_label(self, text):
         if text == "Paciente":
