@@ -1,14 +1,17 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
+from DatabaseManager import DatabaseManager
 
 class Window(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.resize(1388, 775)
+        #self.resize(1388, 775)
+        self.setFixedSize(1388, 775) 
         self.setWindowTitle('Consultorio Medico || Medico Especialista')
         self.setCentralWidget(QWidget(self))
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
         self.create_widgets()
 
     def create_widgets(self):
@@ -71,11 +74,11 @@ class Window(QMainWindow):
         self.lHistorialClinico.setGeometry(928, 24, 208, 34)
         self.lHistorialClinico.setFont(QFont('Segoe UI', 16, QFont.Weight.Bold))
         self.lHistorialClinico.setText('Historial Clinico')
-        self.btnReprogramar1 = QToolButton(self.GralData)
-        self.btnReprogramar1.setGeometry(480, 160, 120, 32)
-        self.btnReprogramar1.setFont(QFont('Segoe UI', 9))
-        self.btnReprogramar1.setText('Buscar Paciente')
-        self.btnReprogramar1.clicked.connect(self.btnReprogramar1_clicked)
+        self.BtnBuscarPAciente = QToolButton(self.GralData)
+        self.BtnBuscarPAciente.setGeometry(480, 160, 120, 32)
+        self.BtnBuscarPAciente.setFont(QFont('Segoe UI', 9))
+        self.BtnBuscarPAciente.setText('Buscar Paciente')
+        self.BtnBuscarPAciente.clicked.connect(self.BtnBuscarPAciente_clicked)
         self.lineEdit1 = QLineEdit(self.GralData)
         self.lineEdit1.setGeometry(120, 160, 345, 33)
         self.lineEdit1.setFont(QFont('Segoe UI', 9))
@@ -102,12 +105,18 @@ class Window(QMainWindow):
         pass
 
     def BtnCerrarSesion_clicked(self, checked):
+        self.close()
+        self.mostrar_ventana_login
+
+    def BtnBuscarPAciente_clicked(self, checked):
         # ToDo insert source code here
         pass
 
-    def btnReprogramar1_clicked(self, checked):
-        # ToDo insert source code here
-        pass
+    def mostrar_ventana_login(self):
+        """Muestra la ventana de inicio de sesión."""
+        from Main import LogInWindow  # Importar la ventana de inicio de sesión
+        self.ventana_login = LogInWindow()
+        self.ventana_login.show()
 
 if __name__ == "__main__":
     app = QApplication([])
