@@ -133,18 +133,21 @@ class LogInWindow(QMainWindow):
     def open_admin_window(self,user_data):
         """Abre la ventana de administrador."""
         #self.admin_window = WindowAdmin(db_manager=self.login_system)
+        self.db_manager.disconnect()
         self.admin_window = WindowAdmin(user_data=user_data) # Pasar el Administrador user
         self.admin_window.show()
         self.close()
 
     def open_paciente_window(self, user_data): # Mandar datos de usuario a la ventana del paciente
         """Abre la ventana de paciente."""
+        self.db_manager.disconnect()
         self.paciente_window = WindowPaciente(user_data=user_data)
         self.paciente_window.show()
         self.close()
 
     def open_medico_window(self, user_data): # Mandar datos de usuario a la ventana del medico
         """Abre la ventana de medico."""
+        self.db_manager.disconnect()
         self.medico_window = WindowMedico(user_data=user_data)
         self.medico_window.show()
         self.close()

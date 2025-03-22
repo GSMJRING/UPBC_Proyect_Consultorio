@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
+from mysql.connector import connect
 from DatabaseManager import DatabaseManager
 
 class WindowReagendar(QMainWindow):
@@ -28,11 +29,19 @@ class WindowReagendar(QMainWindow):
         self.NewDate = QDateEdit(self)
         self.NewDate.setGeometry(40, 112, 152, 32)
         self.NewDate.setFont(QFont('Segoe UI', 9))
-        self.NewDate.setDisplayFormat('m/d/yyyy')
+        self.NewDate.setCalendarPopup(True)
+        self.NewDate.setDate(QDate.currentDate())
+        self.NewDate.setMinimumDate(QDate.currentDate())
+        self.NewDate.setMaximumDate(QDate(2032, 1, 1))
+        #self.NewDate.setDisplayFormat('m/d/yyyy')
+        # Hora 
         self.NewTime = QTimeEdit(self)
         self.NewTime.setGeometry(40, 192, 152, 32)
         self.NewTime.setFont(QFont('Segoe UI', 9))
-        self.NewTime.setDisplayFormat('h:nn:ss AMPM')
+        self.NewTime.setTime(QTime.currentTime())
+        self.NewTime.setMinimumTime(QTime(8, 0))
+        self.NewTime.setMaximumTime(QTime(18, 0))
+        self.NewTime.setDisplayFormat('HH:mm:ss AP')
 
         self.lSeleccionarnuevafecha = QLabel(self)
         self.lSeleccionarnuevafecha.setGeometry(48, 80, 132, 24)
@@ -72,7 +81,9 @@ class WindowReagendar(QMainWindow):
         pass
 
     def bCancelar_clicked(self, checked):
-        # ToDo insert source code here
+        # Cerrar la ventana
+        self.close()
+        self.db_manager.disconnect()
         pass
 
   
