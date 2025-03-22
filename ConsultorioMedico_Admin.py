@@ -38,7 +38,7 @@ class WindowAdmin(QMainWindow):
 
         # Boton agregar usuario
         self.bAgregarUsuario = QPushButton(self)
-        self.bAgregarUsuario.setGeometry(32, 512, 169, 65)
+        self.bAgregarUsuario.setGeometry(16, 520, 120, 48)
         self.bAgregarUsuario.setFont(QFont('Segoe UI', 9))
         self.bAgregarUsuario.setText('Agregar Usuario')
         self.bAgregarUsuario.clicked.connect(self.bAgregarUsuario_clicked)
@@ -162,13 +162,13 @@ class WindowAdmin(QMainWindow):
         self.dte_Nacimiento.setMaximumDate(QDate(2032, 1, 1))
         # Boton eliminar usuario
         self.bEliminarUsuario = QPushButton(self)
-        self.bEliminarUsuario.setGeometry(400, 520, 136, 48)
+        self.bEliminarUsuario.setGeometry(416, 520, 120, 48)
         self.bEliminarUsuario.setFont(QFont('Segoe UI', 9))
         self.bEliminarUsuario.setText('Eliminar Usuario')
         self.bEliminarUsuario.clicked.connect(self.bEliminarUsuario_clicked)
         # Boton actualizar usuario
         self.bActualizarUsuario = QPushButton(self)
-        self.bActualizarUsuario.setGeometry(216, 512, 169, 65)
+        self.bActualizarUsuario.setGeometry(152, 520, 120, 48)
         self.bActualizarUsuario.setFont(QFont('Segoe UI', 9))
         self.bActualizarUsuario.setText('Actualizar Usuario')
         self.bActualizarUsuario.clicked.connect(self.bActualizarUsuario_clicked)
@@ -185,7 +185,18 @@ class WindowAdmin(QMainWindow):
         self.lAdministrator.setGeometry(16, 8, 312, 24)
         self.lAdministrator.setFont(QFont('Segoe UI', 12, QFont.Weight.Bold))
         self.lAdministrator.setText(f" Bienvenido: {self.user_data[1]} ")  # Nombre y apellido
-        #pass
+
+        # Boton para limpiar seleccion y campos
+        self.bClearSelection = QPushButton(self)
+        self.bClearSelection.setGeometry(288, 520, 112, 48)
+        self.bClearSelection.setFont(QFont('Segoe UI', 9))
+        self.bClearSelection.setText('Clear Selection')
+        self.bClearSelection.clicked.connect(self.bClearSelection_clicked)
+
+
+    def bClearSelection_clicked(self, checked):
+        # ToDo insert source code here
+        pass
 
     def update_label(self, text):
         if text == "Paciente":

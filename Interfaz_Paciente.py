@@ -28,6 +28,8 @@ class WindowPaciente(QMainWindow):
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowCloseButtonHint)  # No se puede maximizar
         self.setWindowOpacity(0.90)  # Opacidad de la ventana
         self.setStyleSheet('background-color: rgb(0, 0, 0);')  # Color de fondo de la ventana
+        self.icono = QIcon('C:\Consultorio\paciente.ico')  # Icono de la ventana de la aplicacion
+        self.setWindowIcon(self.icono)  # Icono de la ventana de la aplicacion
         
         self.cargar_medicos()  # Cargar los médicos al iniciar la ventana
         self.CargarUsuarioDetails()  # Cargar los detalles del usuario || ID del paciente
