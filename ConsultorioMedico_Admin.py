@@ -36,27 +36,6 @@ class WindowAdmin(QMainWindow):
         self.LogoIMG.setGeometry(448, 48, 129, 129)
         self.LogoIMG.setScaledContents(True)
 
-        # Boton agregar usuario
-        self.bAgregarUsuario = QPushButton(self)
-        self.bAgregarUsuario.setGeometry(16, 520, 120, 48)
-        self.bAgregarUsuario.setFont(QFont('Segoe UI', 9))
-        self.bAgregarUsuario.setText('Agregar Usuario')
-        self.bAgregarUsuario.clicked.connect(self.bAgregarUsuario_clicked)
-
-        # Boton Cancelar
-        self.bCerrarventana = QPushButton(self)
-        self.bCerrarventana.setGeometry(768, 520, 169, 65)
-        self.bCerrarventana.setFont(QFont('Segoe UI', 9))
-        self.bCerrarventana.setText('Cerrar ventana')
-        self.bCerrarventana.clicked.connect(self.bCerrarventana_clicked)
-
-        # Boton ver usuarios activos
-        self.bVerUsuarios = QPushButton(self)
-        self.bVerUsuarios.setGeometry(592, 520, 169, 65)
-        self.bVerUsuarios.setFont(QFont('Segoe UI', 9))
-        self.bVerUsuarios.setText('Ver Usuarios')
-        self.bVerUsuarios.clicked.connect(self.bVerUsuarios_clicked)
-
         # List view - mostrar usuarios activos
         self.ListUSers = QListView(self)
         self.ListUSers.setGeometry(592, 24, 320, 472)
@@ -160,18 +139,6 @@ class WindowAdmin(QMainWindow):
         self.dte_Nacimiento.setDate(QDate.currentDate())
         self.dte_Nacimiento.setMinimumDate(QDate(1970, 1, 1))
         self.dte_Nacimiento.setMaximumDate(QDate(2032, 1, 1))
-        # Boton eliminar usuario
-        self.bEliminarUsuario = QPushButton(self)
-        self.bEliminarUsuario.setGeometry(416, 520, 120, 48)
-        self.bEliminarUsuario.setFont(QFont('Segoe UI', 9))
-        self.bEliminarUsuario.setText('Eliminar Usuario')
-        self.bEliminarUsuario.clicked.connect(self.bEliminarUsuario_clicked)
-        # Boton actualizar usuario
-        self.bActualizarUsuario = QPushButton(self)
-        self.bActualizarUsuario.setGeometry(152, 520, 120, 48)
-        self.bActualizarUsuario.setFont(QFont('Segoe UI', 9))
-        self.bActualizarUsuario.setText('Actualizar Usuario')
-        self.bActualizarUsuario.clicked.connect(self.bActualizarUsuario_clicked)
         # Nota de usuario || Password
         self.lblNotificacionPWS = QLabel(self.groupBox1)
         self.lblNotificacionPWS.setGeometry(32, 144, 376, 24)
@@ -186,18 +153,49 @@ class WindowAdmin(QMainWindow):
         self.lAdministrator.setFont(QFont('Segoe UI', 12, QFont.Weight.Bold))
         self.lAdministrator.setText(f" Bienvenido: {self.user_data[1]} ")  # Nombre y apellido
 
-        # Boton para limpiar seleccion y campos
+        # BOTONES _______________________________________________________________________________________
+         
+         # Boton eliminar usuario
+        self.bEliminarUsuario = QPushButton(self)
+        self.bEliminarUsuario.setGeometry(416, 520, 120, 48) # (400, 520, 136, 48)
+        self.bEliminarUsuario.setFont(QFont('Segoe UI', 9))
+        self.bEliminarUsuario.setText('Eliminar Usuario')
+        self.bEliminarUsuario.clicked.connect(self.bEliminarUsuario_clicked)
+        
+        # Boton actualizar usuario
+        self.bActualizarUsuario = QPushButton(self)
+        self.bActualizarUsuario.setGeometry(152, 520, 120, 48) # (216, 512, 169, 65)
+        self.bActualizarUsuario.setFont(QFont('Segoe UI', 9))
+        self.bActualizarUsuario.setText('Actualizar Usuario')
+        self.bActualizarUsuario.clicked.connect(self.bActualizarUsuario_clicked)
+        
+         # Boton agregar usuario
+        self.bAgregarUsuario = QPushButton(self)
+        self.bAgregarUsuario.setGeometry(16, 520, 120, 48) # (32, 512, 169, 65)
+        self.bAgregarUsuario.setFont(QFont('Segoe UI', 9))
+        self.bAgregarUsuario.setText('Agregar Usuario')
+        self.bAgregarUsuario.clicked.connect(self.bAgregarUsuario_clicked)
+
+        # Boton Cancelar
+        self.bCerrarventana = QPushButton(self)
+        self.bCerrarventana.setGeometry(768, 520, 169, 65) # (768, 520, 169, 65)
+        self.bCerrarventana.setFont(QFont('Segoe UI', 9))
+        self.bCerrarventana.setText('Cerrar ventana')
+        self.bCerrarventana.clicked.connect(self.bCerrarventana_clicked)
+
+        # Boton ver usuarios activos
+        self.bVerUsuarios = QPushButton(self)
+        self.bVerUsuarios.setGeometry(592, 520, 169, 65) # (592, 520, 169, 65)
+        self.bVerUsuarios.setFont(QFont('Segoe UI', 9))
+        self.bVerUsuarios.setText('Ver Usuarios')
+        self.bVerUsuarios.clicked.connect(self.bVerUsuarios_clicked)
+
+        # Boton de ClearSelection
         self.bClearSelection = QPushButton(self)
         self.bClearSelection.setGeometry(288, 520, 112, 48)
         self.bClearSelection.setFont(QFont('Segoe UI', 9))
         self.bClearSelection.setText('Clear Selection')
-        self.bClearSelection.clicked.connect(self.bClearSelection_clicked)
-
-
-    def bClearSelection_clicked(self, checked):
-        # Limpiar campos
-        self.LimpiarCampos
-        print('Boton presionado')
+        self.bClearSelection.clicked.connect(self.LimpiarCampos)
 
     def update_label(self, text):
         if text == "Paciente":
