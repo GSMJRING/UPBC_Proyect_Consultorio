@@ -195,8 +195,8 @@ class WindowAdmin(QMainWindow):
 
 
     def bClearSelection_clicked(self, checked):
-        # ToDo insert source code here
-        pass
+        # Limpiar campos
+        self.LimpiarCampos
 
     def update_label(self, text):
         if text == "Paciente":
