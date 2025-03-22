@@ -109,8 +109,6 @@ class WindowReagendar(QMainWindow):
         self.db_manager.disconnect()
         pass
 
-  
-
 if __name__ == "__main__":
     app = QApplication([])
     Reagendar_window = WindowReagendar()
