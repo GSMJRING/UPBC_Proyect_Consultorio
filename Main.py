@@ -11,6 +11,8 @@ from PyQt6.QtGui import QPixmap # Importar la clase QPixmap para la imagen de in
 from ConsultorioMedico_Admin import WindowAdmin  # Importar la clase WindowAdmin
 from Interfaz_Paciente import WindowPaciente  # Importar la clase WindowPaciente
 from Interfaz_Medico import WindowMedico  # Importar la clase WindowMedico
+from easteregg import SnakeGame  # Importar la clase SnakeGame
+
 
 # Conexion a base de datos
 #from ConsultorioMedico_LogIn_Function import *  # Importar la clase LoginSystem base de datos || Database ConsultorioMedico
@@ -44,7 +46,6 @@ class LogInWindow(QMainWindow):
         self.PICLogin.setPixmap(pixmap1)
         self.PICLogin.setGeometry(72, 16, 160, 129)
         self.PICLogin.setScaledContents(True)
-        
         
         # Boton de inicio de sesion.
         self.bLogIn = QPushButton(self)
@@ -99,6 +100,12 @@ class LogInWindow(QMainWindow):
         if self.txt_User.text() == "" or self.txt_Pass.text() == "":
             QMessageBox.warning(self, "Error", "Por favor, ingrese su usuario y contraseña.")
             return
+        
+        if username == "snake" and password == "snake":
+            QMessageBox.information(self, "Bienvenido al juego !", "Easter Egg!")
+            self.Eagsteregg()
+            return
+        
         else:
             # Validar las credenciales
             # Aqui estaba el error Andres → 03/15/2025 12:34
@@ -151,6 +158,10 @@ class LogInWindow(QMainWindow):
         self.medico_window = WindowMedico(user_data=user_data)
         self.medico_window.show()
         self.close()
+
+    def Eagsteregg(self):
+        self.snake_game = SnakeGame()
+        self.snake_game.show()
 
 
 # MENU

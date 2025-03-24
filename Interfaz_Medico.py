@@ -212,6 +212,26 @@ class WindowMedico(QMainWindow):
 
     def BtnCancelarCita_clicked(self, checked):
         # Cancelar la cita seleccionada
+        selectIndex = self.TableCitasActivas.selectedIndexes()
+        if len(selectIndex) == 0:
+            QMessageBox.warning(self, "Error", "Seleccione una cita para cancelar.")
+            return
+        self.ObtenerCitaNombre()
+        if self.ID_CitaSeleccionada == 0:
+            QMessageBox.warning(self, "Error", "Seleccione una cita para cancelar.")
+            return
+        # Preguntar al usuario si está seguro de cancelar la cita
+        respuesta = QMessageBox.question(self, "Cancelar cita", "¿Está seguro de cancelar la cita seleccionada?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if respuesta == QMessageBox.StandardButton.Yes:
+            success, message = self.db_manager.cancelar_cita(self.ID_CitaSeleccionada)
+            if success:
+                QMessageBox.information(self, "Éxito", "Cita cancelada con éxito.")
+                # Actualizar la tabla de citas activas
+                self.CitasMedicasActivas()
+                self.LimpiarCampos()
+            else:
+                QMessageBox.warning(self, "Error", f"No se pudo cancelar la cita: {message}")
+                
         pass
 
     def BtnReprogramar_clicked(self, checked):
