@@ -211,7 +211,7 @@ class WindowMedico(QMainWindow):
             QMessageBox.warning(self, "Error", f"Error inesperado: {str(e)}")
 
     def BtnCancelarCita_clicked(self, checked):
-        # ToDo insert source code here
+        # Cancelar la cita seleccionada
         pass
 
     def BtnReprogramar_clicked(self, checked):
