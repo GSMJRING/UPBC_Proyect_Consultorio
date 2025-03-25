@@ -105,6 +105,7 @@ class WindowMedico(QMainWindow):
         self.TableCitasActivas.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.TableCitasActivas.setSortingEnabled(True)
         self.TableCitasActivas.setAlternatingRowColors(True)
+        self.TableCitasActivas.clicked.connect(self.cargar_detalles_diagnostico)  # Actualizar detalles al seleccionar una cita
         
         # Botones de accion de la aplicacion
         self.BtnDiagnostico = QToolButton(self.GpDiagnostico)
@@ -142,12 +143,12 @@ class WindowMedico(QMainWindow):
         self.BtnBuscarPAciente.setText('Buscar Paciente')
         self.BtnBuscarPAciente.clicked.connect(self.BtnBuscarPAciente_clicked)
 
-        self.BtnDetallesDiag = QToolButton(self.GpDiagnostico)
-        self.BtnDetallesDiag.setGeometry(456, 456, 160, 48)
-        self.BtnDetallesDiag.setStyleSheet("background-color: #FF17695E; color: white;")
-        self.BtnDetallesDiag.setFont(QFont('Segoe UI', 9))
-        self.BtnDetallesDiag.setText('Detalles del Diagnostico')
-        self.BtnDetallesDiag.clicked.connect(self.BtnDetallesDiag_clicked)
+        # self.BtnDetallesDiag = QToolButton(self.GpDiagnostico)
+        # self.BtnDetallesDiag.setGeometry(456, 456, 160, 48)
+        # self.BtnDetallesDiag.setStyleSheet("background-color: #FF17695E; color: white;")
+        # self.BtnDetallesDiag.setFont(QFont('Segoe UI', 9))
+        # self.BtnDetallesDiag.setText('Detalles del Diagnostico')
+        # self.BtnDetallesDiag.clicked.connect(self.BtnDetallesDiag_clicked)
 
         self.btnClearSel = QToolButton(self.GralData)
         self.btnClearSel.setGeometry(480, 112, 120, 32)
@@ -316,9 +317,9 @@ class WindowMedico(QMainWindow):
                     model.item(i, 3).setBackground(QColor(255, 255, 0, 50))
                     model.item(i, 4).setBackground(QColor(255, 255, 0, 50))
 
-    def BtnDetallesDiag_clicked(self, checked):
-        # ToDo insert source code here
-        pass
+    # def BtnDetallesDiag_clicked(self, checked):
+    #     # ToDo insert source code here
+    #     pass
     
     def btnClearSel_clicked(self, checked):
         self.LimpiarCampos()
@@ -450,6 +451,44 @@ class WindowMedico(QMainWindow):
         self.lineEdit1.setFocus()
         pass
 
+    def cargar_detalles_diagnostico(self):
+        try:
+            # Obtener el ID de la cita seleccionada
+            selected_index = self.TableCitasActivas.currentIndex()
+            self.lineEdit1.setText(self.TableCitasActivas.model().index(selected_index.row(), 1).data() + " " + self.TableCitasActivas.model().index(selected_index.row(), 2).data())
+           
+           # Si el status de la cita es "Cancelada" o "Completada", no se puede registrar un diagnóstico
+            if self.TableCitasActivas.model().index(selected_index.row(), 4).data() in ["cancelada", "programada"]:  # Estado de la cita
+                self.PlainDiagnostico.clear()
+                self.PlainTratamiento.clear()
+                self.PlainObservaciones.clear()
+                self.TableCitasActivas.clearSelection()
+                self.lineEdit1.setFocus()
+                return
+
+            cita_id = self.TableCitasActivas.model().index(selected_index.row(), 0).data()
+            print(f"ID de la cita seleccionada: {cita_id}")
+            # Llamar al stored procedure para obtener los detalles del diagnóstico
+            success, data = self.db_manager.DetallesDiagnostico(cita_id)
+            if not success:
+                QMessageBox.warning(self, "Error", data)
+                return
+        
+            # Mostrar los detalles del diagnóstico en los campos de texto
+            self.PlainDiagnostico.setPlainText(data[0])
+            self.PlainTratamiento.setPlainText(data[1])
+            self.PlainObservaciones.setPlainText(data[2])
+        except Exception as e:
+            # Mostrar un mensaje de error si ocurre una excepción
+            #QMessageBox.warning(self, "Database", "Este registro no contiene un diagnóstico")
+            self.PlainDiagnostico.clear()
+            self.PlainTratamiento.clear()
+            self.PlainObservaciones.clear()
+            self.TableCitasActivas.clearSelection()
+            self.lineEdit1.setFocus()
+        pass
+            
+        
 if __name__ == "__main__":
     app = QApplication([])
     Medico_window = WindowMedico()

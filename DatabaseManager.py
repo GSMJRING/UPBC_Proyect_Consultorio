@@ -208,3 +208,17 @@ class DatabaseManager:
             return True, "Diagnóstico guardado y cita completada con éxito."
         except Exception as e:
             return False, f"Error al guardar el diagnóstico: {e}"
+        
+    def DetallesDiagnostico(self, cita_id):
+        """Obtiene los detalles del diagnóstico de la cita seleccionada."""
+        try:
+            cursor = self.connection.cursor()
+            cursor.callproc("ObtenerDetallesDiagnostico", (cita_id,))
+            resultados = []
+            for result in cursor.stored_results():
+                resultados = result.fetchone()
+            cursor.close()
+            return True, resultados
+        except Error as e:
+            return False, f"No se pudieron obtener los detalles del diagnóstico: {e}"
+        
