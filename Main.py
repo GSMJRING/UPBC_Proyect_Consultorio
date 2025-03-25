@@ -3,6 +3,8 @@
 # Nota: Es importante instalar las liberiarias de PyQt6 y mysql-connector-python
 # pip install PyQt6 mysql-connector-python
 #
+# Crear el instalador de la aplicacion (pip install pyinstaller)
+# pyinstaller --onefile --noconsole --icon=Consultorio\Login.ico Main.py
 # Ventana de inicio de sesion
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *

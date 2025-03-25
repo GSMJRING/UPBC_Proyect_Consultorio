@@ -14,6 +14,7 @@ class WindowMedico(QMainWindow):
         # Nuevo modo de conexion a base de datos
         self.db_manager = DatabaseManager()
         self.db_manager.connect()
+        self.setWindowIcon(QIcon('C:\Consultorio\doctor.ico'))  # Icono de la ventana de la aplicacion
 
         self.user_data = user_data
         self.id_usuario = user_data[5] # ID del doctor (usuario)
