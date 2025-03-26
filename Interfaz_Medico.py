@@ -459,7 +459,7 @@ class WindowMedico(QMainWindow):
             self.lineEdit1.setText(self.TableCitasActivas.model().index(selected_index.row(), 1).data() + " " + self.TableCitasActivas.model().index(selected_index.row(), 2).data())
            
            # Si el status de la cita es "Cancelada" o "Completada", no se puede registrar un diagnóstico
-            if self.TableCitasActivas.model().index(selected_index.row(), 4).data() in ["cancelada", "programada"]:  # Estado de la cita
+            if self.TableCitasActivas.model().index(selected_index.row(), 4).data() in ["cancelada", "Completada"]:  # Estado de la cita
                 self.PlainDiagnostico.clear()
                 self.PlainTratamiento.clear()
                 self.PlainObservaciones.clear()
@@ -476,16 +476,16 @@ class WindowMedico(QMainWindow):
                 return
         
             # Mostrar los detalles del diagnóstico en los campos de texto
-            self.PlainDiagnostico.setPlainText(data[0])
-            self.PlainTratamiento.setPlainText(data[1])
-            self.PlainObservaciones.setPlainText(data[2])
+            self.PlainDiagnostico.setPlainText(data[1])
+            self.PlainTratamiento.setPlainText(data[2])
+            self.PlainObservaciones.setPlainText(data[3])
         except Exception as e:
             # Mostrar un mensaje de error si ocurre una excepción
             #QMessageBox.warning(self, "Database", "Este registro no contiene un diagnóstico")
             self.PlainDiagnostico.clear()
             self.PlainTratamiento.clear()
             self.PlainObservaciones.clear()
-            self.TableCitasActivas.clearSelection()
+            #self.TableCitasActivas.clearSelection()
             self.lineEdit1.setFocus()
         pass
             
